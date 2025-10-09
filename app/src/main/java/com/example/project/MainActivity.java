@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Initialize button using findViewById
-        nextActivityButton = findViewById(R.id.button);
+        nextActivityButton = findViewById(R.id.butLogin);
 
         // Set click listener for the button
         nextActivityButton.setOnClickListener(v -> {

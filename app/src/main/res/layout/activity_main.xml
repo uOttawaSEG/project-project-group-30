@@ -15,18 +15,26 @@
         android:text="Main Activity"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/butLogin"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Next"
+        android:id="@+id/butLogin"
+        android:layout_width="124dp"
+        android:layout_height="49dp"
+        android:text="Sign in"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/butReg"
+        android:layout_width="128dp"
+        android:layout_height="60dp"
+        android:text="Register"
+        tools:layout_editor_absoluteX="141dp"
+        tools:layout_editor_absoluteY="405dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
