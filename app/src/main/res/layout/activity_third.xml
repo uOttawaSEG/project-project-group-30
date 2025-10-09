@@ -132,7 +132,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txt_Program"
+            android:id="@+id/txt_Deg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Program of study" />
