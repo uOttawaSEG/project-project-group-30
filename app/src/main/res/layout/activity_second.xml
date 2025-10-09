@@ -7,4 +7,37 @@
     android:layout_height="match_parent"
     tools:context=".SecondActivity">
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="245dp"
+        android:layout_height="0dp"
+        android:text="Login as:"
+        android:textScaleX="1"
+        android:textSize="60sp"
+        tools:layout_editor_absoluteX="89dp"
+        tools:layout_editor_absoluteY="78dp" />
+
+    <Button
+        android:id="@+id/btnAdmin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Admin"
+        tools:layout_editor_absoluteX="101dp"
+        tools:layout_editor_absoluteY="203dp" />
+
+    <Button
+        android:id="@+id/btnStudent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Student"
+        tools:layout_editor_absoluteX="101dp"
+        tools:layout_editor_absoluteY="296dp" />
+
+    <Button
+        android:id="@+id/btnTutor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tutor"
+        tools:layout_editor_absoluteX="104dp"
+        tools:layout_editor_absoluteY="388dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
