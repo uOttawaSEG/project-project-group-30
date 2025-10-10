@@ -91,11 +91,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txt_Password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Account password" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -111,11 +106,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout5">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txt_Phone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Phone number" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -125,17 +115,35 @@
         android:layout_marginStart="1dp"
         android:layout_marginTop="43dp"
         android:layout_marginEnd="1dp"
-        android:layout_marginBottom="102dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/txt_Deg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txt_Deg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Program of study" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/txt_Password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Account password"
+        tools:layout_editor_absoluteX="-1dp"
+        tools:layout_editor_absoluteY="407dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/txt_Phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Phone number"
+        tools:layout_editor_absoluteX="-1dp"
+        tools:layout_editor_absoluteY="512dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/txt_Deg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Program of study"
+        tools:layout_editor_absoluteX="-6dp"
+        tools:layout_editor_absoluteY="655dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
