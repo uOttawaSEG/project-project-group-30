@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         // Set click listener for the button
         nextActivityButton.setOnClickListener(v -> {
             // Create Intent to start SecondActivity
-            Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+            Intent intent = new Intent(MainActivity.this, longin_as.class);
             // Start the activity
             startActivity(intent);
         });
