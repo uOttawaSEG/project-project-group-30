@@ -11,18 +11,18 @@
     tools:context=".reg_student">
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:text="Student Registration"
+        android:layout_marginBottom="18dp"
+        android:text="Tutor Registration"
         android:textSize="26sp"
         android:textStyle="bold" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp">
+        android:layout_marginBottom="14dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtFirstTutor"
@@ -32,9 +32,9 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp">
+        android:layout_marginBottom="14dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtLastTutor"
@@ -44,9 +44,9 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp">
+        android:layout_marginBottom="14dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtEmailTutor"
@@ -57,9 +57,9 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp">
+        android:layout_marginBottom="14dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtRegPassTutor"
@@ -70,9 +70,9 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp">
+        android:layout_marginBottom="14dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtPhone"
@@ -83,15 +83,28 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp">
+        android:layout_marginBottom="14dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtDeg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Program of study" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp">
+
+        <EditText
+            android:id="@+id/txtCourseOffered"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:hint="Courses offered"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
