@@ -13,7 +13,7 @@ public class reg_as extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.reg_as);
+        setContentView(R.layout.activity_reg_as);
 
         btnStudent = findViewById(R.id.btnStudentRegister);
         btnTutor = findViewById(R.id.btnTutorRegister);
