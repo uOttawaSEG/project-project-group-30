@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-    class tutor extends user{
+    static class tutor extends user{
         public tutor(String first, String last, String email, String password, String phone, String highest) {
             super( first,  last,  email,  password,  phone, "", highest);
         }

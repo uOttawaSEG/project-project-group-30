@@ -13,7 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class reg_student extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
-    public static Button btnRegStudent;
+
 
 
     @Override
