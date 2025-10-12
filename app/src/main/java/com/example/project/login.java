@@ -6,7 +6,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class login_as extends AppCompatActivity {
+public class login extends AppCompatActivity {
 
     private Button btnLoginAdmin;
     private Button btnLoginStudent;
@@ -15,7 +15,7 @@ public class login_as extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_as);
+        setContentView(R.layout.activity_login);
 
         btnLoginAdmin = findViewById(R.id.btnLoginAdmin);
         btnLoginStudent = findViewById(R.id.btnLoginStudent);
@@ -23,15 +23,15 @@ public class login_as extends AppCompatActivity {
 
 
         btnLoginAdmin.setOnClickListener(v -> {
-            Intent intent = new Intent(login_as.this, login_admin.class);
+            Intent intent = new Intent(login.this, login_admin.class);
             startActivity(intent);
         });
         btnLoginStudent.setOnClickListener(v -> {
-            Intent intent = new Intent(login_as.this, login_student.class);
+            Intent intent = new Intent(login.this, login_student.class);
             startActivity(intent);
         });
         btnLoginTutor.setOnClickListener(v -> {
-            Intent intent = new Intent(login_as.this, login_tutor.class);
+            Intent intent = new Intent(login.this, login_tutor.class);
             startActivity(intent);
         });
 

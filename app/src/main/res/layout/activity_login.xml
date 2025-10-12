@@ -7,14 +7,14 @@
     android:orientation="vertical"
     android:gravity="center"
     android:padding="24dp"
-    tools:context=".login_as">
+    tools:context=".login">
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Login as:"
-        android:textSize="40sp"
+        android:textSize="48sp"
         android:textStyle="bold"
         android:layout_marginBottom="64dp" />
 
@@ -23,20 +23,23 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Admin"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@android:color/black"/>
 
     <Button
         android:id="@+id/btnLoginStudent"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Student"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@android:color/black"/>
 
 
     <Button
         android:id="@+id/btnLoginTutor"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="Tutor" />
+        android:text="Tutor"
+        android:backgroundTint="@android:color/black"/>
 
 </LinearLayout>

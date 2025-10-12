@@ -30,7 +30,7 @@
             android:name=".login_admin"
             android:exported="false" />
         <activity
-            android:name=".reg_as"
+            android:name=".reg"
             android:exported="false" />
         <activity
             android:name=".reg_tutor"
@@ -39,7 +39,7 @@
             android:name=".reg_student"
             android:exported="false" />
         <activity
-            android:name=".login_as"
+            android:name=".login"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

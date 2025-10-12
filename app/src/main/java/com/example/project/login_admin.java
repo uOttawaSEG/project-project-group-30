@@ -17,17 +17,16 @@ public class login_admin extends AppCompatActivity {
         setContentView(R.layout.activity_login_admin);
 
         btnContinueAdmin = findViewById(R.id.btnContinueAdmin);
-        txtUsername =(EditText) findViewById(R.id.txtUsername);
-        txtPassword =(EditText) findViewById(R.id.txtPassword);
+        txtUsername =(EditText) findViewById(R.id.txtUserAdmin);
+        txtPassword =(EditText) findViewById(R.id.txtPassAdmin);
 
         btnContinueAdmin.setOnClickListener(v -> {
             String email = txtUsername.getText().toString().trim();
             String password = txtPassword.getText().toString().trim();
            if(email.equals("admin@uottawa.ca") && password.equals("Admin101")){
-               Intent intent = new Intent(login_admin.this, login_as.class);
+               Intent intent = new Intent(login_admin.this, welcome_admin.class);
                startActivity(intent);
             }
-
         });
 
     }

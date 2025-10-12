@@ -117,11 +117,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         btnLogin.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, login_as.class);
+            Intent intent = new Intent(MainActivity.this, login.class);
             startActivity(intent);
         });
         btnRegister.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, reg_as.class);
+            Intent intent = new Intent(MainActivity.this, reg.class);
             startActivity(intent);
         });
     }

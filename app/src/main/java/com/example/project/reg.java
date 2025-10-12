@@ -6,24 +6,24 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class reg_as extends AppCompatActivity {
+public class reg extends AppCompatActivity {
     private Button btnStudent;
     private Button btnTutor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reg_as);
+        setContentView(R.layout.activity_reg);
 
         btnStudent = findViewById(R.id.btnStudentRegister);
         btnTutor = findViewById(R.id.btnTutorRegister);
 
         btnStudent.setOnClickListener(v -> {
-            Intent intent = new Intent(reg_as.this, reg_student.class);
+            Intent intent = new Intent(reg.this, reg_student.class);
             startActivity(intent);
         });
         btnTutor.setOnClickListener(v -> {
-            Intent intent = new Intent(reg_as.this, reg_tutor.class);
+            Intent intent = new Intent(reg.this, reg_tutor.class);
             startActivity(intent);
         });
 
