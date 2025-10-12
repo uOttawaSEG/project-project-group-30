@@ -31,6 +31,7 @@ public class login_tutor extends AppCompatActivity {
                 if(email.equals(t.getEmail()) && password.equals(t.getPassword())) {
                  Intent intent = new Intent(login_tutor.this, welcome_tutor.class);
                  startActivity(intent);
+                 return;
             }
             }
             Toast.makeText(this, "Invalid email or password.", Toast.LENGTH_SHORT).show();
