@@ -5,16 +5,10 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
-import com.google.android.material.textfield.TextInputEditText;
 
 public class login_admin extends AppCompatActivity {
-    private EditText txtEmail;
+    private EditText txtUsername;
     private EditText txtPassword;
     private Button btnContinueAdmin;
     @Override
@@ -23,14 +17,17 @@ public class login_admin extends AppCompatActivity {
         setContentView(R.layout.activity_login_admin);
 
         btnContinueAdmin = findViewById(R.id.btnContinueAdmin);
-
+        txtUsername =(EditText) findViewById(R.id.txtUsername);
+        txtPassword =(EditText) findViewById(R.id.txtPassword);
 
         btnContinueAdmin.setOnClickListener(v -> {
-            txtEmail =(EditText) findViewById(R.id.txtEmail);
-            txtPassword =(EditText) findViewById(R.id.txtPassword);
+            String email = txtUsername.getText().toString().trim();
+            String password = txtPassword.getText().toString().trim();
+           if(email.equals("admin@uottawa.ca") && password.equals("Admin101")){
+               Intent intent = new Intent(login_admin.this, login_as.class);
+               startActivity(intent);
+            }
 
-            Intent intent = new Intent(login_admin.this, login_as.class);
-            startActivity(intent);
         });
 
     }
