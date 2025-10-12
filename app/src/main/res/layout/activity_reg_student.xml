@@ -25,7 +25,7 @@
         android:layout_marginBottom="12dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txtFirstStudent"
+            android:id="@+id/txtFirstTutor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="First Name" />
@@ -37,7 +37,7 @@
         android:layout_marginBottom="12dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txtLastStudent"
+            android:id="@+id/txtLastTutor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Last Name" />
@@ -49,7 +49,7 @@
         android:layout_marginBottom="12dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txtEmailStudent"
+            android:id="@+id/txtEmailTutor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email address"
@@ -62,7 +62,7 @@
         android:layout_marginBottom="12dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txtRegPassStudent"
+            android:id="@+id/txtRegPassTutor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Account password"
@@ -88,7 +88,7 @@
         android:layout_marginBottom="24dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txtDeg"
+            android:id="@+id/txtProg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Program of study" />
