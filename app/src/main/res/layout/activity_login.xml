@@ -23,6 +23,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Admin"
+        android:textSize="24sp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@android:color/black"/>
 
@@ -31,6 +32,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Student"
+        android:textSize="24sp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@android:color/black"/>
 
@@ -40,6 +42,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Tutor"
+        android:textSize="24sp"
         android:backgroundTint="@android:color/black"/>
 
 </LinearLayout>
