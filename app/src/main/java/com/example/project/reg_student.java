@@ -45,7 +45,7 @@ public class reg_student extends AppCompatActivity {
 
     }
 
-    }
+}
 
 
 
