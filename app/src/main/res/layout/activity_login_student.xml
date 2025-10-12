@@ -7,4 +7,37 @@
     android:layout_height="match_parent"
     tools:context=".login_student">
 
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/txtPassword3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="322dp" />
+
+    <Button
+        android:id="@+id/btnContinueAdmin2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CONTINUE"
+        tools:layout_editor_absoluteX="138dp"
+        tools:layout_editor_absoluteY="472dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/txtEmail2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="205dp" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Student Login:"
+        android:textSize="34sp"
+        tools:layout_editor_absoluteX="97dp"
+        tools:layout_editor_absoluteY="74dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
