@@ -7,21 +7,24 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     // Declare Button object
-    private Button nextActivityButton;
+    private Button btnLogin;
+    private Button btnRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize button using findViewById
-        nextActivityButton = findViewById(R.id.Login);
+        btnLogin = findViewById(R.id.btnLogin);
+        btnRegister = findViewById(R.id.btnRegister);
 
-        // Set click listener for the button
-        nextActivityButton.setOnClickListener(v -> {
-            // Create Intent to start SecondActivity
-            Intent intent = new Intent(MainActivity.this, longin_as.class);
-            // Start the activity
+
+        btnLogin.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, login_as.class);
+            startActivity(intent);
+        });
+        btnRegister.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, reg_as.class);
             startActivity(intent);
         });
     }

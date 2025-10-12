@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:allowBackup="true"
@@ -10,12 +10,21 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Project" >
+        android:theme="@style/Theme.Project">
         <activity
-            android:name=".Final"
+            android:name=".welcome_admin"
             android:exported="false" />
         <activity
-            android:name=".login"
+            android:name=".login_tutor"
+            android:exported="false" />
+        <activity
+            android:name=".login_student"
+            android:exported="false" />
+        <activity
+            android:name=".welcome"
+            android:exported="false" />
+        <activity
+            android:name=".login_admin"
             android:exported="false" />
         <activity
             android:name=".reg_as"
@@ -27,11 +36,11 @@
             android:name=".reg_student"
             android:exported="false" />
         <activity
-            android:name=".longin_as"
+            android:name=".login_as"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
