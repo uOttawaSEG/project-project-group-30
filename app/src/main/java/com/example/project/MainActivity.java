@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
     class student extends user{
         public student(String first, String last, String email, String password, String phone, String program) {
-            super( first,  last,  email,  password,  phone,  program,  program);
+            super( first,  last,  email,  password,  phone,  program,  "");
 
         }
     }
