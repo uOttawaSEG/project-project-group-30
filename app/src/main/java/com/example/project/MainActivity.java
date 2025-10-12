@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     abstract class user{
+        user currentUser;
         String first;
         String last;
         String email;
@@ -38,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
         public String getFirst(){
             return first;
+        }
+        public user getCurrentUser(){
+            return currentUser;
         }
         public String getLast(){
             return last;
@@ -79,6 +83,9 @@ public class MainActivity extends AppCompatActivity {
         }
         public void setHighest(String highest){
             this.highest=highest;
+        }
+        public void setCurrentUser(user user){
+            this.currentUser=user;
         }
     }
 
