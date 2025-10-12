@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     static ArrayList<tutor> tutors = new ArrayList<tutor>();
 
 
-    abstract class user{
+    abstract static class user{
         user currentUser;
         String first;
         String last;
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    class student extends user{
+     static class student extends user{
         public student(String first, String last, String email, String password, String phone, String program) {
             super( first,  last,  email,  password,  phone,  program,  "");
 
