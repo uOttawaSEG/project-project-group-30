@@ -75,7 +75,7 @@
         android:layout_marginBottom="14dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txtPhone"
+            android:id="@+id/txtPhoneTutor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Phone number"
@@ -91,7 +91,7 @@
             android:id="@+id/txtDeg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Program of study" />
+            android:hint="Highest level of degree" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout

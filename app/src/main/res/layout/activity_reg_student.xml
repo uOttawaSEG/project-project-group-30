@@ -75,7 +75,7 @@
         android:layout_marginBottom="16dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txtPhone"
+            android:id="@+id/txtPhoneTutor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Phone number"
