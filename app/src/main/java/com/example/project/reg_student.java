@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,12 +31,18 @@ public class reg_student extends AppCompatActivity {
         });
         Button btnRegStudent = findViewById(R.id.btnRegStudent);
         btnRegStudent.setOnClickListener(v -> {
-            String a = String.valueOf(findViewById(R.id.txtFirstTutor));
-            String b = String.valueOf(findViewById(R.id.txtLastTutor));
-            String c = String.valueOf(findViewById(R.id.txtEmailTutor));
-            String d = String.valueOf(findViewById(R.id.txtRegPassTutor));
-            String e = String.valueOf(findViewById(R.id.txtPhoneTutor));
-            String f = String.valueOf(findViewById(R.id.txtProg));
+            EditText txtFirstTutor = (EditText) findViewById(R.id.txtFirstTutor);
+            EditText txtLastTutor = (EditText) findViewById(R.id.txtLastTutor);
+            EditText txtEmailTutor = (EditText) findViewById(R.id.txtEmailTutor);
+            EditText txtRegPassTutor = (EditText) findViewById(R.id.txtRegPassTutor);
+            EditText txtPhoneTutor = (EditText) findViewById(R.id.txtPhoneTutor);
+            EditText txtProg = (EditText) findViewById(R.id.txtProg);
+            String a = txtFirstTutor.getText().toString().trim();
+            String b = txtLastTutor.getText().toString().trim();
+            String c = txtEmailTutor.getText().toString().trim();
+            String d = txtRegPassTutor.getText().toString().trim();
+            String e = txtPhoneTutor.getText().toString().trim();
+            String f = txtProg.getText().toString().trim();
             MainActivity.student newStudent = new MainActivity.student(a, b, c, d, e, f);
             MainActivity.studentAccounts.add(c);
             MainActivity.students.add(newStudent);
