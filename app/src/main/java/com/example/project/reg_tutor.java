@@ -3,6 +3,7 @@ package com.example.project;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,13 +27,20 @@ public class reg_tutor extends AppCompatActivity {
         });
         Button btnRegTutor = findViewById(R.id.btnRegTutor);
         btnRegTutor.setOnClickListener(v -> {
-            String a = String.valueOf(findViewById(R.id.txtFirstTutor));
-            String b = String.valueOf(findViewById(R.id.txtLastTutor));
-            String c = String.valueOf(findViewById(R.id.txtEmailTutor));
-            String d = String.valueOf(findViewById(R.id.txtRegPassTutor));
-            String e = String.valueOf(findViewById(R.id.txtPhoneTutor));
-            String f = String.valueOf(findViewById(R.id.txtDeg));
-            String g = String.valueOf(findViewById(R.id.txtCourseOffered));
+            EditText txtFirstTutor = (EditText) findViewById(R.id.txtFirstTutor);
+            EditText txtLastTutor = (EditText) findViewById(R.id.txtLastTutor);
+            EditText txtEmailTutor = (EditText) findViewById(R.id.txtEmailTutor);
+            EditText txtRegPassTutor = (EditText) findViewById(R.id.txtRegPassTutor);
+            EditText txtPhoneTutor = (EditText) findViewById(R.id.txtPhoneTutor);
+            EditText txtDeg = (EditText) findViewById(R.id.txtDeg);
+            EditText txtCourseOffered = (EditText) findViewById(R.id.txtCourseOffered);
+            String a = txtFirstTutor.getText().toString().trim();
+            String b = txtLastTutor.getText().toString().trim();
+            String c = txtEmailTutor.getText().toString().trim();
+            String d = txtRegPassTutor.getText().toString().trim();
+            String e = txtPhoneTutor.getText().toString().trim();
+            String f = txtDeg.getText().toString().trim();
+            String g = txtCourseOffered.getText().toString().trim();
             MainActivity.tutor newTutor = new MainActivity.tutor(a, b, c, d, e, f);
             MainActivity.tutorAccounts.add(c);
             MainActivity.tutors.add(newTutor);
