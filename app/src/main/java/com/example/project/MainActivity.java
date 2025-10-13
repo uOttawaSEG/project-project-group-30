@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     static ArrayList<student> students = new ArrayList<student>();
     static ArrayList<tutor> tutors = new ArrayList<tutor>();
 
-
+    // abstract class representing a general user
     abstract static class user{
         user currentUser;
         String first;
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         String phone;
         String program;
         String highest;
-
+        // constructor to initialize a user
         user(String first, String last, String email, String password, String phone, String program, String highest){
             this.first = first;
             this.last = last;
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             this.program = program;
             this.highest = highest;
         }
-
+        // getter methods for all attributes
         public String getFirst(){
             return first;
         }
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         public String getHighest(){
             return highest;
         }
-
+        // setter methods for updating attributes
         public void setEmail(String email) {
             this.email = email;
         }
@@ -88,13 +88,14 @@ public class MainActivity extends AppCompatActivity {
             this.currentUser=user;
         }
     }
-
+    // student class inherits from user
      static class student extends user{
         public student(String first, String last, String email, String password, String phone, String program) {
             super( first,  last,  email,  password,  phone,  program,  "");
 
         }
     }
+    // tutor class inherits from user
     static class tutor extends user{
         public tutor(String first, String last, String email, String password, String phone, String highest) {
             super( first,  last,  email,  password,  phone, "", highest);
@@ -111,11 +112,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        // connect button variables to the actual buttons in the XML layout
         btnLogin = findViewById(R.id.btnLogin);
         btnRegister = findViewById(R.id.btnRegister);
 
-
+        // when the login button is clicked, open the login screen
         btnLogin.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, login.class);
             startActivity(intent);

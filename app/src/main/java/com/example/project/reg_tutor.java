@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class reg_tutor extends AppCompatActivity {
+    // boolean flags to track if input fields are valid
     boolean gpass = false;
     boolean gphone = false;
     boolean gdeg = false;
@@ -31,15 +32,20 @@ public class reg_tutor extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // enable EdgeToEdge display for full-screen layout
         EdgeToEdge.enable(this);
+        // add padding to avoid overlapping with system bars
         setContentView(R.layout.activity_reg_tutor);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        // connect the register button from XML to code
         Button btnRegTutor = findViewById(R.id.btnRegTutor);
+        // when the register button is clicked, validate input and create a new tutor
         btnRegTutor.setOnClickListener(v -> {
+            // get text input fields from the layout
             EditText txtFirstTutor = (EditText) findViewById(R.id.txtFirstTutor);
             EditText txtLastTutor = (EditText) findViewById(R.id.txtLastTutor);
             EditText txtEmailTutor = (EditText) findViewById(R.id.txtEmailTutor);
@@ -47,6 +53,7 @@ public class reg_tutor extends AppCompatActivity {
             EditText txtPhoneTutor = (EditText) findViewById(R.id.txtPhoneTutor);
             EditText txtDeg = (EditText) findViewById(R.id.txtDeg);
             EditText txtCourseOffered = (EditText) findViewById(R.id.txtCourseOffered);
+            // validate first name
             if(txtFirstTutor.getText().toString().trim().length()==0){
                 Toast.makeText(this, "Invalid first name", Toast.LENGTH_SHORT).show();
                 gfirst = false;
@@ -56,6 +63,7 @@ public class reg_tutor extends AppCompatActivity {
 
                 gfirst = true;
             }
+            // validate last name
             if(txtLastTutor.getText().toString().trim().length()==0){
                 Toast.makeText(this, "Invalid last name", Toast.LENGTH_SHORT).show();
                 glast = false;
@@ -64,6 +72,7 @@ public class reg_tutor extends AppCompatActivity {
             }else{
                 glast = true;
             }
+            // validate email contains '@'
             if(txtEmailTutor.getText().toString().trim().contains("@")){
                 gemail = true;
 
@@ -73,6 +82,7 @@ public class reg_tutor extends AppCompatActivity {
                 gemail = false;
 
             }
+            // validate password length
             if(txtRegPassTutor.getText().toString().trim().length()<8){
                 Toast.makeText(this, "Invalid password. Must be at least 8 characters", Toast.LENGTH_SHORT).show();
                 gpass = false;
@@ -80,6 +90,7 @@ public class reg_tutor extends AppCompatActivity {
             }else {
                 gpass = true;
             }
+            // validate password length
             if(txtPhoneTutor.getText().toString().trim().length()!=10){
                 Toast.makeText(this, "Invalid phone number", Toast.LENGTH_SHORT).show();
                 gphone = false;
@@ -87,6 +98,7 @@ public class reg_tutor extends AppCompatActivity {
             }else{
                 gphone = true;
             }
+            // validate degree input
             if(txtDeg.getText().toString().trim().length()==0){
                 Toast.makeText(this, "Invalid degree", Toast.LENGTH_SHORT).show();
                 gdeg = false;
@@ -95,6 +107,7 @@ public class reg_tutor extends AppCompatActivity {
             }else {
                 gdeg = true;
             }
+            // validate courses offered
             if(txtCourseOffered.getText().toString().trim().length()==0){
                 Toast.makeText(this, "Invalid course selection", Toast.LENGTH_SHORT).show();
                 gcourse = false;
@@ -105,7 +118,7 @@ public class reg_tutor extends AppCompatActivity {
                 String g = txtCourseOffered.getText().toString().trim();
                 gcourse = true;
             }
-
+            // if all validations pass, create a new tutor account
             if(gfirst && glast && gemail && gpass && gphone && gdeg && gcourse){
                 String a = txtFirstTutor.getText().toString().trim();
                 String b = txtLastTutor.getText().toString().trim();
@@ -113,9 +126,11 @@ public class reg_tutor extends AppCompatActivity {
                 String d = txtRegPassTutor.getText().toString().trim();
                 String e = txtPhoneTutor.getText().toString().trim();
                 String f = txtDeg.getText().toString().trim();
+                // create new tutor object and add to global lists
                 MainActivity.tutor newTutor = new MainActivity.tutor(a, b, c, d, e, f);
                 MainActivity.tutorAccounts.add(c);
                 MainActivity.tutors.add(newTutor);
+                // return to main activity after successful registration
                 Intent intent = new Intent(reg_tutor.this, MainActivity.class);
                 startActivity(intent);
             }
