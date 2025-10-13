@@ -37,6 +37,7 @@ public class login_student extends AppCompatActivity {
                 if(email.equals(s.getEmail()) && password.equals(s.getPassword())) {
                     Intent intent = new Intent(login_student.this, welcome_student.class);
                     startActivity(intent);
+                    return;
                 }
             }
             Toast.makeText(this, "Invalid email or password.", Toast.LENGTH_SHORT).show();

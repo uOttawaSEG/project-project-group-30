@@ -28,7 +28,6 @@ public class login_tutor extends AppCompatActivity {
             String email = txtUsername.getText().toString().trim();
             String password = txtPassword.getText().toString().trim();
             for(MainActivity.tutor t :MainActivity.tutors){
-                Toast.makeText(this, "entered username= "+ txtUsername + "username in list is "+ t.getEmail()+ "entered password= "+ txtPassword+ " password in list is "+ t.getPassword(), Toast.LENGTH_SHORT).show();
 
                 if(email.equals(t.getEmail()) && password.equals(t.getPassword())) {
                  Intent intent = new Intent(login_tutor.this, welcome_tutor.class);
