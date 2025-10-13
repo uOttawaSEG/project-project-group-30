@@ -38,9 +38,11 @@ public class login_student extends AppCompatActivity {
                     Intent intent = new Intent(login_student.this, welcome_student.class);
                     startActivity(intent);
                     return;
+                }else{
+                    Toast.makeText(this, "Invalid email or password.", Toast.LENGTH_SHORT).show();
+
                 }
             }
-            Toast.makeText(this, "Invalid email or password.", Toast.LENGTH_SHORT).show();
         });
 
     }
