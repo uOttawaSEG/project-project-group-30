@@ -172,6 +172,9 @@ public class reg_tutor extends AppCompatActivity {
                                     map.put("Degree", f);
                                     map.put("Courses" , g);
                                     map.put("UserId", userId);
+                                    map.put("Job", "Tutor");
+                                    map.put("Status", "0");
+
 
 
 

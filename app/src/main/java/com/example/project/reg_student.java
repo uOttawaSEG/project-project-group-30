@@ -19,6 +19,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class reg_student extends AppCompatActivity {
     FirebaseAuth mAuth;
@@ -142,6 +145,20 @@ public class reg_student extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(reg_student.this, "Regristration sucessfull. Pending approval. ",
                                             Toast.LENGTH_SHORT).show();
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    String userId = user.getUid();
+                                    HashMap<String,Object> map = new HashMap<>();
+                                    map.put("First", a);
+                                    map.put("Last", b);
+                                    map.put("Email", c);
+                                    map.put("Phone", e);
+                                    map.put("Degree", f);
+                                    map.put("UserId", userId);
+                                    map.put("Job", "Tutor");
+                                    map.put("Status", "0");
+
+                                    FirebaseDatabase.getInstance().getReference().child("Accounts").child(userId).updateChildren(map);
+
                                     Intent intent = new Intent(reg_student.this, MainActivity.class);
                                     startActivity(intent);
                                 } else {
