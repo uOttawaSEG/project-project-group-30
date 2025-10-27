@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -15,6 +18,8 @@ public class MainActivity extends AppCompatActivity {
     //lists of all of the students and tutors
     static ArrayList<student> students = new ArrayList<student>();
     static ArrayList<tutor> tutors = new ArrayList<tutor>();
+    public static ArrayList<String> requests = new ArrayList<String>();
+    public static ArrayList<String> rejected = new ArrayList<String>();
 
 
     abstract static class user{
@@ -61,6 +66,10 @@ public class MainActivity extends AppCompatActivity {
         }
         public String getHighest(){
             return highest;
+        }
+
+        public String getFullName() {
+            return getFirst() + " " + getLast();
         }
 
         public void setEmail(String email) {
@@ -114,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
         btnLogin = findViewById(R.id.btnLogin);
         btnRegister = findViewById(R.id.btnRegister);
+
 
 
         btnLogin.setOnClickListener(v -> {
