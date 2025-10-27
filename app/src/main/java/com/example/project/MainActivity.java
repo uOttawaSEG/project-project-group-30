@@ -15,6 +15,8 @@ public class MainActivity extends AppCompatActivity {
     //lists of all of the students and tutors
     static ArrayList<student> students = new ArrayList<student>();
     static ArrayList<tutor> tutors = new ArrayList<tutor>();
+    public static ArrayList<String> rejected = new ArrayList<String>();
+    public static ArrayList<String> requests = new ArrayList<String>();
 
 
     abstract static class user{
@@ -61,6 +63,10 @@ public class MainActivity extends AppCompatActivity {
         }
         public String getHighest(){
             return highest;
+        }
+
+        public String getFullName() {
+            return getFirst() + " " + getLast();
         }
 
         public void setEmail(String email) {
