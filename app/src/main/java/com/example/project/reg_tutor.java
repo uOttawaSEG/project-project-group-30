@@ -154,6 +154,9 @@ public class reg_tutor extends AppCompatActivity {
                                     Log.d(TAG, "createUserWithEmail:success");
                                     Toast.makeText(reg_tutor.this, "Registration Successful.",
                                             Toast.LENGTH_SHORT).show();
+                                    // return to main activity after successful registration
+                                    Intent intent = new Intent(reg_tutor.this, MainActivity.class);
+                                    startActivity(intent);
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -163,9 +166,7 @@ public class reg_tutor extends AppCompatActivity {
                             }
 
                         });
-                // return to main activity after successful registration
-                Intent intent = new Intent(reg_tutor.this, MainActivity.class);
-                startActivity(intent);
+
             }
         });
         }
