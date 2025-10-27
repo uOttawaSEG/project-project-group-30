@@ -27,20 +27,27 @@ public class login_student extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        // assign the characteristics of the actual button to the varible declared in this code, same as the username and password text fields
         btnContinueStudent = findViewById(R.id.btnContinueStudent);
         EditText txtUsername = (EditText) findViewById(R.id.txtUserStudent);
         EditText txtPassword =(EditText) findViewById(R.id.txtPassStudent);
+        // when the button is clicked it makes sure that the text in the user is the same as the student login and the password, it calles a function to get the student password and student user and then verifies
         btnContinueStudent.setOnClickListener(v -> {
             String email = txtUsername.getText().toString().trim();
             String password = txtPassword.getText().toString().trim();
             for(MainActivity.student s :MainActivity.students){
+                // if it matches up then it proceeds to student welcome page
                 if(email.equals(s.getEmail()) && password.equals(s.getPassword())) {
                     Intent intent = new Intent(login_student.this, welcome_student.class);
                     startActivity(intent);
                     return;
                 }
+                // if its different then it sends a message that its either the wrong email or password
+                else{
+                    Toast.makeText(this, "Invalid email or password.", Toast.LENGTH_SHORT).show();
+
+                }
             }
-            Toast.makeText(this, "Invalid email or password.", Toast.LENGTH_SHORT).show();
         });
 
     }
