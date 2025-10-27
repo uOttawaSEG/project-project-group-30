@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class login_tutor extends AppCompatActivity {
 
@@ -53,25 +55,36 @@ public class login_tutor extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(login_tutor.this, "Authentication Successful.",
-                                        Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(login_tutor.this, welcome_tutor.class);
-                                startActivity(intent);
+                                FirebaseUser User = mAuth.getCurrentUser();
+                                String userId = User.getUid();
+                                FirebaseDatabase.getInstance().getReference("Accounts").child(userId).child("Status").get().addOnCompleteListener(statusTask->{
+                                    if(statusTask.isSuccessful()){
+                                        Long status = (Long)statusTask.getResult().getValue();
+                                        if(status == 1){
+                                            Toast.makeText(login_tutor.this, "Your Account has been Rejected by the Admin. If you think this is incorrect please contact 123-456-7890", Toast.LENGTH_LONG).show();
+                                        }
+                                        else if(status==2){
+                                            Toast.makeText(login_tutor.this, "Your Account has been Approved. Welcome!",Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(login_tutor.this, welcome_student.class);
+                                            startActivity(intent);
+                                        }
+                                        else if(status==0){
+                                            Toast.makeText(login_tutor.this, "Your account is pending approval",Toast.LENGTH_LONG ).show();
+                                        }
+                                    }
 
+                                });
 
-                            } else {
-                                Toast.makeText(login_tutor.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(login_tutor.this,"Authentication failed", Toast.LENGTH_LONG).show();
                             }
 
                         }
 
                     });
-
-
-
-
         });
 
     }
-}
+
+    }
