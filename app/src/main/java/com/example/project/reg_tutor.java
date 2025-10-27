@@ -144,6 +144,7 @@ public class reg_tutor extends AppCompatActivity {
                 String d = txtRegPassTutor.getText().toString().trim();
                 String e = txtPhoneTutor.getText().toString().trim();
                 String f = txtDeg.getText().toString().trim();
+                String g = txtCourseOffered.getText().toString().trim();
                 // create new tutor object and add to global lists
                 MainActivity.tutor newTutor = new MainActivity.tutor(a, b, c, d, e, f);
                 MainActivity.tutorAccounts.add(c);
@@ -171,6 +172,7 @@ public class reg_tutor extends AppCompatActivity {
                                     FirebaseDatabase.getInstance().getReference().child("Accounts").push().child("Email").setValue(c);
                                     FirebaseDatabase.getInstance().getReference().child("Accounts").push().child("Phone").setValue(e);
                                     FirebaseDatabase.getInstance().getReference().child("Accounts").push().child("Degree").setValue(f);
+                                    FirebaseDatabase.getInstance().getReference().child("Accounts").push().child("Courses").setValue(g);
                                     FirebaseDatabase.getInstance().getReference().child("Accounts").push().child("UserId").setValue(userId);
 
 
