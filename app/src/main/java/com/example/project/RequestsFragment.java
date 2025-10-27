@@ -8,7 +8,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class RequestsFragment extends Fragment {
+    private DatabaseReference requestsRef;
 
     @Nullable
     @Override
@@ -21,6 +25,10 @@ public class RequestsFragment extends Fragment {
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setPadding(50, 50, 50, 50);
         scrollView.addView(layout);
+
+        requestsRef = FirebaseDatabase.getInstance().getReference("requests");
+
+
 
         if (MainActivity.requests.isEmpty()) {
             TextView tv = new TextView(getContext());
