@@ -175,8 +175,7 @@ public class reg_tutor extends AppCompatActivity {
 
 
 
-                                    FirebaseDatabase.getInstance().getReference().child("Accounts").push().child("UserId").setValue(userId);
-                                    FirebaseDatabase.getInstance().getReference().child("Accounts").child("UserId").updateChildren(map);
+                                    FirebaseDatabase.getInstance().getReference().child("Accounts").child(userId).updateChildren(map);
 
 
 
