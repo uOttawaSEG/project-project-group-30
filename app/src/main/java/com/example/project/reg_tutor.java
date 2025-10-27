@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class reg_tutor extends AppCompatActivity {
     // boolean flags to track if input fields are valid
@@ -157,6 +158,19 @@ public class reg_tutor extends AppCompatActivity {
                                     Toast.makeText(reg_tutor.this, "Registration Successful.",
                                             Toast.LENGTH_SHORT).show();
                                     // return to main activity after successful registration
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                        String userId = user.getUid();
+
+                                    FirebaseDatabase.getInstance().getReference().child("Accounts").push().child("First").setValue(a);
+                                    FirebaseDatabase.getInstance().getReference().child("Accounts").push().child("Last").setValue(b);
+                                    FirebaseDatabase.getInstance().getReference().child("Accounts").push().child("Email").setValue(c);
+                                    FirebaseDatabase.getInstance().getReference().child("Accounts").push().child("Phone").setValue(e);
+                                    FirebaseDatabase.getInstance().getReference().child("Accounts").push().child("Degree").setValue(f);
+                                    FirebaseDatabase.getInstance().getReference().child("Accounts").push().child("UserId").setValue(userId);
+
+
+
+
                                     Intent intent = new Intent(reg_tutor.this, MainActivity.class);
                                     startActivity(intent);
                                 } else {
