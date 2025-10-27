@@ -165,15 +165,17 @@ public class reg_tutor extends AppCompatActivity {
                                     FirebaseUser user = mAuth.getCurrentUser();
                                         String userId = user.getUid();
                                     HashMap<String,Object> map = new HashMap<>();
-                                    map.put()
+                                    map.put("First", a);
+                                    map.put("Last", b);
+                                    map.put("Email", c);
+                                    map.put("Phone", e);
+                                    map.put("Degree", f);
+                                    map.put("Courses" , g);
+                                    map.put("UserId", userId);
 
-                                    FirebaseDatabase.getInstance().getReference().child("Accounts").push().child("First").setValue(a);
-                                    FirebaseDatabase.getInstance().getReference().child("Accounts").push().child("Last").setValue(b);
-                                    FirebaseDatabase.getInstance().getReference().child("Accounts").push().child("Email").setValue(c);
-                                    FirebaseDatabase.getInstance().getReference().child("Accounts").push().child("Phone").setValue(e);
-                                    FirebaseDatabase.getInstance().getReference().child("Accounts").push().child("Degree").setValue(f);
-                                    FirebaseDatabase.getInstance().getReference().child("Accounts").push().child("Courses").setValue(g);
-                                    FirebaseDatabase.getInstance().getReference().child("Accounts").push().child("UserId").setValue(userId);
+
+
+                                    FirebaseDatabase.getInstance().getReference().child("Accounts").updateChildren(map);
 
 
 
