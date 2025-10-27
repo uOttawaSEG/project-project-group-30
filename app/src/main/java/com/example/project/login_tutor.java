@@ -7,14 +7,21 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
 public class login_tutor extends AppCompatActivity {
 
     private Button btnContinueTutor;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +35,7 @@ public class login_tutor extends AppCompatActivity {
         btnContinueTutor.setOnClickListener(v -> {
             String email = txtUsername.getText().toString().trim();
             String password = txtPassword.getText().toString().trim();
-            for(MainActivity.tutor t :MainActivity.tutors){
+            /* for(MainActivity.tutor t :MainActivity.tutors){
 //if both the user and password are correct it takes us to the the tutor login page
                 if(email.equals(t.getEmail()) && password.equals(t.getPassword())) {
                  Intent intent = new Intent(login_tutor.this, welcome_tutor.class);
@@ -38,6 +45,32 @@ public class login_tutor extends AppCompatActivity {
             }
             //if it goes through the for loop and doest take them to the next page then that means that theres no tutors in the tutor list that match these login details therefore it prints an message saying its the wrong password or user
             Toast.makeText(this, "Invalid email or password.", Toast.LENGTH_SHORT).show();
+
+                */
+            mAuth = FirebaseAuth.getInstance();
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(login_tutor.this, "Authentication Successful.",
+                                        Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(login_tutor.this, welcome_tutor.class);
+                                startActivity(intent);
+
+
+                            } else {
+                                Toast.makeText(login_tutor.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+
+                    });
+
+
+
+
         });
 
     }

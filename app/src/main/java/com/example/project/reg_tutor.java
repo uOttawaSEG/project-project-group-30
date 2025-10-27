@@ -1,16 +1,32 @@
 package com.example.project;
 
+import static android.content.ContentValues.TAG;
+
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Objects;
 
 public class reg_tutor extends AppCompatActivity {
     // boolean flags to track if input fields are valid
@@ -21,6 +37,8 @@ public class reg_tutor extends AppCompatActivity {
     boolean gemail = false;
     boolean gfirst = false;
     boolean glast = false;
+
+    FirebaseAuth mAuth;
 
 
 
@@ -126,13 +144,57 @@ public class reg_tutor extends AppCompatActivity {
                 String d = txtRegPassTutor.getText().toString().trim();
                 String e = txtPhoneTutor.getText().toString().trim();
                 String f = txtDeg.getText().toString().trim();
+                String g = txtCourseOffered.getText().toString().trim();
                 // create new tutor object and add to global lists
                 MainActivity.tutor newTutor = new MainActivity.tutor(a, b, c, d, e, f);
                 MainActivity.tutorAccounts.add(c);
                 MainActivity.tutors.add(newTutor);
-                // return to main activity after successful registration
-                Intent intent = new Intent(reg_tutor.this, MainActivity.class);
-                startActivity(intent);
+                mAuth = FirebaseAuth.getInstance();
+                String email = txtEmailTutor.getText().toString().trim();
+                String password = txtRegPassTutor.getText().toString().trim();
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    Log.d(TAG, "createUserWithEmail:success");
+                                    Toast.makeText(reg_tutor.this, "Registration Successful.",
+                                            Toast.LENGTH_SHORT).show();
+                                    // return to main activity after successful registration
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                        String userId = user.getUid();
+                                    HashMap<String,Object> map = new HashMap<>();
+                                    map.put("First", a);
+                                    map.put("Last", b);
+                                    map.put("Email", c);
+                                    map.put("Phone", e);
+                                    map.put("Degree", f);
+                                    map.put("Courses" , g);
+                                    map.put("UserId", userId);
+                                    map.put("Job", "Tutor");
+                                    map.put("Status", "0");
+
+
+
+
+                                    FirebaseDatabase.getInstance().getReference().child("Accounts").child(userId).updateChildren(map);
+
+
+
+
+                                    Intent intent = new Intent(reg_tutor.this, MainActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                    Toast.makeText(reg_tutor.this, "Registration failed.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                        });
+
             }
         });
         }

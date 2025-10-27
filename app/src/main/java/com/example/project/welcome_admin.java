@@ -4,25 +4,41 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 public class welcome_admin extends AppCompatActivity {
-    // Button that allows the admin to log out and return to the main screen
-    // button for logging out
+
     private Button btnLogout;
+    private ViewPager2 viewPager;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // set the layout of this screen to activity_welcome_admin.xml
         setContentView(R.layout.activity_welcome_admin);
-        // connect the logout button variable to the actual button in the XML layout
+
         btnLogout = findViewById(R.id.btnLogout);
-        // when the logout button is clicked, return the user to the main screen
+        viewPager = findViewById(R.id.viewPager);
+        tabLayout = findViewById(R.id.tabLayout);
+
+        // Set up ViewPager adapter
+        viewPager.setAdapter(new ViewPagerAdapter(this));
+
+        // Attach TabLayout and set tab titles
+        new TabLayoutMediator(tabLayout, viewPager,
+                (tab, position) -> {
+                    switch (position) {
+                        case 0: tab.setText("Requests"); break;
+                        case 1: tab.setText("Rejected"); break;
+                        case 2: tab.setText("Approved"); break;
+                    }
+                }).attach();
+
+        // Logout button
         btnLogout.setOnClickListener(v -> {
             Intent intent = new Intent(welcome_admin.this, MainActivity.class);
             startActivity(intent);
