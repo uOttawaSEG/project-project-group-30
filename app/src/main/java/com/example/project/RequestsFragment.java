@@ -8,11 +8,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.*;
 
 public class RequestsFragment extends Fragment {
-    private DatabaseReference requestsRef;
+
+    private DatabaseReference accountsRef;
 
     @Nullable
     @Override
@@ -26,68 +26,85 @@ public class RequestsFragment extends Fragment {
         layout.setPadding(50, 50, 50, 50);
         scrollView.addView(layout);
 
-        requestsRef = FirebaseDatabase.getInstance().getReference("requests");
+        accountsRef = FirebaseDatabase.getInstance().getReference("Accounts");
 
+        // Get all pending requests (Status == "0")
+        accountsRef.orderByChild("Status").equalTo("0")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (!snapshot.exists()) {
+                            TextView tv = new TextView(getContext());
+                            tv.setText("No requests yet.");
+                            layout.addView(tv);
+                            return;
+                        }
 
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            String email = ds.child("Email").getValue(String.class);
+                            String first = ds.child("First").getValue(String.class);
+                            String last = ds.child("Last").getValue(String.class);
+                            String phone = ds.child("Phone").getValue(String.class);
+                            String degree = ds.child("Degree").getValue(String.class);
+                            String job = ds.child("Job").getValue(String.class);
+                            String courses = ds.child("Courses").getValue(String.class);
 
-        if (MainActivity.requests.isEmpty()) {
-            TextView tv = new TextView(getContext());
-            tv.setText("No student requests yet.");
-            layout.addView(tv);
-            return scrollView;
-        }
+                            Button btn = new Button(getContext());
+                            btn.setText(first + " " + last);
+                            btn.setAllCaps(false);
 
-        for (String email : MainActivity.requests) {
-            // find the full student info by email
-            MainActivity.student s = null;
-            for (MainActivity.student st : MainActivity.students) {
-                if (st.getEmail().equals(email)) {
-                    s = st;
-                    break;
-                }
-            }
-            if (s == null) continue;
+                            btn.setOnClickListener(v -> {
+                                StringBuilder message = new StringBuilder();
+                                message.append("Email: ").append(email).append("\n")
+                                        .append("Phone: ").append(phone).append("\n")
+                                        .append("Degree: ").append(degree).append("\n")
+                                        .append("Job: ").append(job);
 
-            Button btn = new Button(getContext());
-            btn.setText(s.getFullName());
-            btn.setAllCaps(false);
+                                if ("Tutor".equalsIgnoreCase(job) && courses != null && !courses.isEmpty()) {
+                                    message.append("\nCourses Offered: ").append(courses);
+                                }
 
-            MainActivity.student finalS = s;
-            btn.setOnClickListener(v -> {
-                new AlertDialog.Builder(getContext())
-                        .setTitle(finalS.getFullName())
-                        .setMessage(
-                                "Email: " + finalS.getEmail() + "\n" +
-                                        "Phone: " + finalS.getPhone() + "\n" +
-                                        "Program: " + finalS.getProgram()
-                        )
-                        .setPositiveButton("Approve", (dialog, which) -> {
-                            MainActivity.studentAccounts.add(finalS.getEmail());
-                            MainActivity.requests.remove(finalS.getEmail());
-                            Toast.makeText(getContext(), "Approved " + finalS.getFullName(), Toast.LENGTH_SHORT).show();
-                            refreshFragment();
-                        })
-                        .setNegativeButton("Reject", (dialog, which) -> {
-                            MainActivity.rejected.add(finalS.getEmail());
-                            MainActivity.requests.remove(finalS.getEmail());
-                            Toast.makeText(getContext(), "Rejected " + finalS.getFullName(), Toast.LENGTH_SHORT).show();
-                            refreshFragment();
-                        })
-                        .setNeutralButton("Cancel", null)
-                        .show();
-            });
+                                new AlertDialog.Builder(getContext())
+                                        .setTitle(first + " " + last)
+                                        .setMessage(message.toString())
+                                        .setPositiveButton("Approve", (dialog, which) -> {
+                                            ds.getRef().child("Status").setValue("2")
+                                                    .addOnSuccessListener(aVoid -> {
+                                                        Toast.makeText(getContext(), "Approved " + first + " " + last, Toast.LENGTH_SHORT).show();
+                                                        refreshFragment();
+                                                    });
+                                        })
+                                        .setNegativeButton("Reject", (dialog, which) -> {
+                                            ds.getRef().child("Status").setValue("1")
+                                                    .addOnSuccessListener(aVoid -> {
+                                                        Toast.makeText(getContext(), "Rejected " + first + " " + last, Toast.LENGTH_SHORT).show();
+                                                        refreshFragment();
+                                                    });
+                                        })
+                                        .setNeutralButton("Cancel", null)
+                                        .show();
+                            });
 
-            layout.addView(btn);
-        }
+                            layout.addView(btn);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(getContext(), "Failed to load requests.", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
         return scrollView;
     }
 
     private void refreshFragment() {
-        getParentFragmentManager()
-                .beginTransaction()
-                .detach(this)
-                .attach(this)
-                .commit();
+        if (getParentFragmentManager() != null) {
+            getParentFragmentManager()
+                    .beginTransaction()
+                    .detach(this)
+                    .attach(this)
+                    .commit();
+        }
     }
 }
