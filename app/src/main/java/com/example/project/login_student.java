@@ -41,6 +41,7 @@ public class login_student extends AppCompatActivity {
                     Intent intent = new Intent(login_student.this, welcome_student.class);
                     startActivity(intent);
                     return;
+                    //
                 }
                 // if its different then it sends a message that its either the wrong email or password
                 else{
