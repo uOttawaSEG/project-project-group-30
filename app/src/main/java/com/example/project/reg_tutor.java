@@ -25,6 +25,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.Objects;
+
 public class reg_tutor extends AppCompatActivity {
     // boolean flags to track if input fields are valid
     boolean gpass = false;
@@ -160,6 +163,8 @@ public class reg_tutor extends AppCompatActivity {
                                     // return to main activity after successful registration
                                     FirebaseUser user = mAuth.getCurrentUser();
                                         String userId = user.getUid();
+                                    HashMap<String,Object> map = new HashMap<>();
+                                    map.put()
 
                                     FirebaseDatabase.getInstance().getReference().child("Accounts").push().child("First").setValue(a);
                                     FirebaseDatabase.getInstance().getReference().child("Accounts").push().child("Last").setValue(b);
