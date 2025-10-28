@@ -69,20 +69,20 @@ public class login_tutor extends AppCompatActivity {
                                     if(statusTask.isSuccessful()){
                                         // Get the Status value as a Long (number).
                                         // 0 = pending, 1 = rejected, 2 = approved
-                                        Long status = (Long)statusTask.getResult().getValue();
+                                        String status = String.valueOf(statusTask.getResult().getValue());
                                         //If Status == 1, Account rejected by admin
-                                        if(status==1){
+                                        if("1".equals(status)){
                                             Toast.makeText(login_tutor.this, "Your Account has been Rejected by the Admin. If you think this is incorrect please contact 123-456-7890", Toast.LENGTH_LONG).show();
                                         }
                                         // if Status == 2, Account approved by admin
-                                        else if(status==2){
+                                        else if("2".equals(status)){
                                             Toast.makeText(login_tutor.this, "Your Account has been Approved. Welcome!",Toast.LENGTH_LONG).show();
                                             // Send the tutor to the welcome screen
                                             Intent intent = new Intent(login_tutor.this, welcome_student.class);
                                             startActivity(intent);
                                         }
                                         //If Status == 0, Account still pending approval
-                                        else if(status==0){
+                                        else if("0".equals(status)){
                                             Toast.makeText(login_tutor.this, "Your account is pending approval",Toast.LENGTH_LONG ).show();
                                         }
                                     }
