@@ -136,6 +136,7 @@ public class reg_student extends AppCompatActivity {
                 MainActivity.students.add(newStudent);
 
                  */
+                // create a new user account with Firebase Authentication
                 String email = c;
                 String password = d;
                 mAuth.createUserWithEmailAndPassword(email, password)
@@ -147,6 +148,7 @@ public class reg_student extends AppCompatActivity {
                                             Toast.LENGTH_SHORT).show();
                                     FirebaseUser user = mAuth.getCurrentUser();
                                     String userId = user.getUid();
+                                    //Create Hashmap and add user to firebase database
                                     HashMap<String,Object> map = new HashMap<>();
                                     map.put("First", a);
                                     map.put("Last", b);
@@ -156,6 +158,7 @@ public class reg_student extends AppCompatActivity {
                                     map.put("UserId", userId);
                                     map.put("Job", "Student");
                                     map.put("Status", 0);
+                                    // Status is zero if the account is pending approval, 1 if rejected, 2 if approved
 
                                     FirebaseDatabase.getInstance().getReference().child("Accounts").child(userId).updateChildren(map);
 

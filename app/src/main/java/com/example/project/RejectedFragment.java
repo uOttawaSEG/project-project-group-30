@@ -30,7 +30,7 @@ public class RejectedFragment extends Fragment {
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setPadding(50, 50, 50, 50);
         scrollView.addView(layout);
-
+        // When theres, a change in firebase, it will amend the listview
         accountsRef = FirebaseDatabase.getInstance().getReference("Accounts");
         requestListener = new ValueEventListener() {
              @Override
@@ -83,6 +83,7 @@ public class RejectedFragment extends Fragment {
                             });
 
                             layout.addView(btn);
+                            // add user details to listview
                         }
                     }
 
@@ -92,6 +93,7 @@ public class RejectedFragment extends Fragment {
                     }
                 };
         accountsRef.orderByChild("Status").equalTo(1).addValueEventListener(requestListener);
+        //Listens for changes in the database
         return scrollView;
     }
 
@@ -100,6 +102,7 @@ public class RejectedFragment extends Fragment {
         super.onDestroyView();
         if (requestListener != null) {
             accountsRef.removeEventListener(requestListener);
+            //Stops listening
         }
     }
 }
