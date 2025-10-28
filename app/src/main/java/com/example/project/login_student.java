@@ -58,24 +58,37 @@ public class login_student extends AppCompatActivity {
 
                 }
             }*/
+            // This connects the app to Firebase’s Authentication service
             mAuth = FirebaseAuth.getInstance();
+            // attempts to sign in, so it checks these credentials against the Authentication data stored in the database, and runs a listener when its done
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener( new OnCompleteListener<AuthResult>() {
                 @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
+                                // If the sign-in was successful, get the currently logged-in Firebase user.
                                 FirebaseUser User = mAuth.getCurrentUser();
+                                // Get the unique ID (UID) that Firebase assigns to every user account.
                                 String userId = User.getUid();
+                                // Go to the Realtime Database and retrieve this user's "Status" field
+                                // located under: Accounts/{userId}/Status
                                 FirebaseDatabase.getInstance().getReference("Accounts").child(userId).child("Status").get().addOnCompleteListener(statusTask->{
+                                    // This inner listener runs when the database has returned the user's Status value.
                                     if(statusTask.isSuccessful()){
+                                        // Get the Status value as a Long (number).
+                                        // 0 = pending, 1 = rejected, 2 = approved
                                         Long status = (Long)statusTask.getResult().getValue();
+                                        //If Status == 1, Account rejected by admin
                                         if(status == 1){
                                             Toast.makeText(login_student.this, "Your Account has been Rejected by the Admin. If you think this is incorrect please contact 123-456-7890", Toast.LENGTH_LONG).show();
                                         }
+                                        //If Status == 2, Account approved by admin
                                         else if(status==2){
                                             Toast.makeText(login_student.this, "Your Account has been Approved. Welcome!",Toast.LENGTH_LONG).show();
+                                            // Send the student to the welcome screen
                                             Intent intent = new Intent(login_student.this, welcome_student.class);
                                             startActivity(intent);
                                         }
+                                        //If Status == 0, Account still pending approval
                                         else if(status==0){
                                             Toast.makeText(login_student.this, "Your account is pending approval",Toast.LENGTH_LONG ).show();
                                         }
@@ -85,6 +98,8 @@ public class login_student extends AppCompatActivity {
 
                             }
                             else{
+                                // If authentication failed (wrong email/password or user doesn’t exist),
+                                // show an error message.
                                 Toast.makeText(login_student.this,"Authentication failed", Toast.LENGTH_LONG).show();
                             }
 
