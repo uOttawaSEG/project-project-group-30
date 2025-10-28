@@ -32,6 +32,7 @@ public class RequestsFragment extends Fragment {
         requestListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot){
+                        //when there is a change in the database
                         layout.removeAllViews();
                     if (!snapshot.exists()) {
                         TextView tv = new TextView(getContext());
@@ -87,6 +88,7 @@ public class RequestsFragment extends Fragment {
                             layout.addView(btn);
                         }
                     }
+                    //add user details to list view
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
@@ -94,6 +96,7 @@ public class RequestsFragment extends Fragment {
                     }
                 };
         accountsRef.orderByChild("Status").equalTo(0).addValueEventListener(requestListener);
+        //listens for changes in the data base
         return scrollView;
     }
 
@@ -104,4 +107,5 @@ public class RequestsFragment extends Fragment {
             accountsRef.removeEventListener(requestListener);
         }
     }
+    //stops listening
 }

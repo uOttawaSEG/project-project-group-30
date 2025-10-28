@@ -163,7 +163,9 @@ public class reg_tutor extends AppCompatActivity {
                                     // return to main activity after successful registration
                                     FirebaseUser user = mAuth.getCurrentUser();
                                         String userId = user.getUid();
+                                        //get userId from current user
                                     HashMap<String,Object> map = new HashMap<>();
+                                    //create a hash map to add all of the data under the same id
                                     map.put("First", a);
                                     map.put("Last", b);
                                     map.put("Email", c);
@@ -178,6 +180,7 @@ public class reg_tutor extends AppCompatActivity {
 
 
                                     FirebaseDatabase.getInstance().getReference().child("Accounts").child(userId).updateChildren(map);
+                                    //add the hasmap to the database
 
 
 
