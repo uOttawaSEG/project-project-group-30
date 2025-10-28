@@ -78,7 +78,7 @@ public class login_tutor extends AppCompatActivity {
                                         else if("2".equals(status)){
                                             Toast.makeText(login_tutor.this, "Your Account has been Approved. Welcome!",Toast.LENGTH_LONG).show();
                                             // Send the tutor to the welcome screen
-                                            Intent intent = new Intent(login_tutor.this, welcome_student.class);
+                                            Intent intent = new Intent(login_tutor.this, welcome_tutor.class);
                                             startActivity(intent);
                                         }
                                         //If Status == 0, Account still pending approval
