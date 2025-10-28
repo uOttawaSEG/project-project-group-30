@@ -155,7 +155,7 @@ public class reg_student extends AppCompatActivity {
                                     map.put("Degree", f);
                                     map.put("UserId", userId);
                                     map.put("Job", "Student");
-                                    map.put("Status", 0);
+                                    map.put("Status", "0");
 
                                     FirebaseDatabase.getInstance().getReference().child("Accounts").child(userId).updateChildren(map);
 
@@ -163,7 +163,7 @@ public class reg_student extends AppCompatActivity {
                                     startActivity(intent);
                                 } else {
                                     // If sign in fails, display a message to the user.
-                                    Toast.makeText(reg_student.this, "Authentication failed.",
+                                    Toast.makeText(reg_student.this, "Registration failed.",
                                             Toast.LENGTH_SHORT).show();
                                 }
                             }
