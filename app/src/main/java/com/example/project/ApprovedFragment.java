@@ -16,6 +16,8 @@ import com.google.firebase.database.ValueEventListener;
 
 public class ApprovedFragment extends Fragment {
     private DatabaseReference accountsRef;
+    private ValueEventListener requestListener;
+    private LinearLayout layout;
 
     @Nullable
     @Override
@@ -31,18 +33,19 @@ public class ApprovedFragment extends Fragment {
 
         accountsRef = FirebaseDatabase.getInstance().getReference("Accounts");
 
-        accountsRef.orderByChild("Status").equalTo(2)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (!snapshot.exists()) {
-                            TextView tv = new TextView(getContext());
-                            tv.setText("No requests approved.");
-                            layout.addView(tv);
-                            return;
-                        }
+        requestListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                layout.removeAllViews();
+                if (!snapshot.exists()) {
+                    TextView tv = new TextView(getContext());
+                    tv.setText("No requests rejected.");
+                    layout.addView(tv);
+                    return;
+                }
 
-                        for (DataSnapshot ds : snapshot.getChildren()) {
+
+                for (DataSnapshot ds : snapshot.getChildren()) {
                             String email = ds.child("Email").getValue(String.class);
                             String first = ds.child("First").getValue(String.class);
                             String last = ds.child("Last").getValue(String.class);
@@ -81,18 +84,16 @@ public class ApprovedFragment extends Fragment {
                     public void onCancelled(@NonNull DatabaseError error) {
                         Toast.makeText(getContext(), "Failed to load requests.", Toast.LENGTH_SHORT).show();
                     }
-                });
-
+                };
+        accountsRef.orderByChild("Status").equalTo(2).addValueEventListener(requestListener);
         return scrollView;
     }
 
-    private void refreshFragment() {
-        if (getParentFragmentManager() != null) {
-            getParentFragmentManager()
-                    .beginTransaction()
-                    .detach(this)
-                    .attach(this)
-                    .commit();
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (requestListener != null) {
+            accountsRef.removeEventListener(requestListener);
         }
     }
 }
