@@ -1,4 +1,3 @@
-
 package com.example.project;
 
 import android.annotation.SuppressLint;
@@ -155,8 +154,8 @@ public class reg_student extends AppCompatActivity {
                                     map.put("Phone", e);
                                     map.put("Degree", f);
                                     map.put("UserId", userId);
-                                    map.put("Job", "Student");
-                                    map.put("Status", 0);
+                                    map.put("Job", "Tutor");
+                                    map.put("Status", "0");
 
                                     FirebaseDatabase.getInstance().getReference().child("Accounts").child(userId).updateChildren(map);
 
@@ -177,3 +176,7 @@ public class reg_student extends AppCompatActivity {
     }
 
 }
+
+
+
+
