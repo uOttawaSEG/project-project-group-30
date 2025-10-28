@@ -16,6 +16,8 @@ import com.google.firebase.database.ValueEventListener;
 
 public class RejectedFragment extends Fragment {
     private DatabaseReference accountsRef;
+    private ValueEventListener requestListener;
+    private LinearLayout layout;
 
     @Nullable
     @Override
@@ -30,12 +32,11 @@ public class RejectedFragment extends Fragment {
         scrollView.addView(layout);
 
         accountsRef = FirebaseDatabase.getInstance().getReference("Accounts");
-
-        accountsRef.orderByChild("Status").equalTo(1)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (!snapshot.exists()) {
+        requestListener = new ValueEventListener() {
+             @Override
+             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                 layout.removeAllViews();
+                 if (!snapshot.exists()) {
                             TextView tv = new TextView(getContext());
                             tv.setText("No requests rejected.");
                             layout.addView(tv);
@@ -73,7 +74,6 @@ public class RejectedFragment extends Fragment {
                                             ds.getRef().child("Status").setValue(2)
                                                     .addOnSuccessListener(aVoid -> {
                                                         Toast.makeText(getContext(), "Approved " + first + " " + last, Toast.LENGTH_SHORT).show();
-                                                        refreshFragment();
                                                     });
                                         })
                                         .setNeutralButton("Cancel", null)
@@ -90,18 +90,16 @@ public class RejectedFragment extends Fragment {
                     public void onCancelled(@NonNull DatabaseError error) {
                         Toast.makeText(getContext(), "Failed to load requests.", Toast.LENGTH_SHORT).show();
                     }
-                });
-
+                };
+        accountsRef.orderByChild("Status").equalTo(1).addValueEventListener(requestListener);
         return scrollView;
     }
 
-    private void refreshFragment() {
-        if (getParentFragmentManager() != null) {
-            getParentFragmentManager()
-                    .beginTransaction()
-                    .detach(this)
-                    .attach(this)
-                    .commit();
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (requestListener != null) {
+            accountsRef.removeEventListener(requestListener);
         }
     }
 }

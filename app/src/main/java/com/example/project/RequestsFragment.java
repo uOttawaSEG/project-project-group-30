@@ -13,6 +13,8 @@ import com.google.firebase.database.*;
 public class RequestsFragment extends Fragment {
 
     private DatabaseReference accountsRef;
+    private ValueEventListener requestListener;
+    private LinearLayout layout;
 
     @Nullable
     @Override
@@ -27,17 +29,17 @@ public class RequestsFragment extends Fragment {
         scrollView.addView(layout);
 
         accountsRef = FirebaseDatabase.getInstance().getReference("Accounts");
-
-        accountsRef.orderByChild("Status").equalTo(0)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+        requestListener = new ValueEventListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (!snapshot.exists()) {
-                            TextView tv = new TextView(getContext());
-                            tv.setText("No requests yet.");
-                            layout.addView(tv);
-                            return;
-                        }
+                    public void onDataChange(@NonNull DataSnapshot snapshot){
+                        layout.removeAllViews();
+                    if (!snapshot.exists()) {
+                        TextView tv = new TextView(getContext());
+                        tv.setText("No requests yet.");
+                        layout.addView(tv);
+                        return;
+                    }
+
 
                         for (DataSnapshot ds : snapshot.getChildren()) {
                             String email = ds.child("Email").getValue(String.class);
@@ -70,14 +72,12 @@ public class RequestsFragment extends Fragment {
                                             ds.getRef().child("Status").setValue(2)
                                                     .addOnSuccessListener(aVoid -> {
                                                         Toast.makeText(getContext(), "Approved " + first + " " + last, Toast.LENGTH_SHORT).show();
-                                                        refreshFragment();
                                                     });
                                         })
                                         .setNegativeButton("Reject", (dialog, which) -> {
                                             ds.getRef().child("Status").setValue(1)
                                                     .addOnSuccessListener(aVoid -> {
                                                         Toast.makeText(getContext(), "Rejected " + first + " " + last, Toast.LENGTH_SHORT).show();
-                                                        refreshFragment();
                                                     });
                                         })
                                         .setNeutralButton("Cancel", null)
@@ -92,18 +92,16 @@ public class RequestsFragment extends Fragment {
                     public void onCancelled(@NonNull DatabaseError error) {
                         Toast.makeText(getContext(), "Failed to load requests.", Toast.LENGTH_SHORT).show();
                     }
-                });
-
+                };
+        accountsRef.orderByChild("Status").equalTo(0).addValueEventListener(requestListener);
         return scrollView;
     }
 
-    private void refreshFragment() {
-        if (getParentFragmentManager() != null) {
-            getParentFragmentManager()
-                    .beginTransaction()
-                    .detach(this)
-                    .attach(this)
-                    .commit();
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (requestListener != null) {
+            accountsRef.removeEventListener(requestListener);
         }
     }
 }
