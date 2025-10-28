@@ -86,6 +86,7 @@ public class ApprovedFragment extends Fragment {
                     }
                 };
         accountsRef.orderByChild("Status").equalTo(2).addValueEventListener(requestListener);
+
         return scrollView;
     }
 
