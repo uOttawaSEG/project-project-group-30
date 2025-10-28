@@ -60,11 +60,11 @@ public class login_tutor extends AppCompatActivity {
                                 FirebaseDatabase.getInstance().getReference("Accounts").child(userId).child("Status").get().addOnCompleteListener(statusTask->{
                                     if(statusTask.isSuccessful()){
                                         Long status = (Long)statusTask.getResult().getValue();
-                                        if(status == 1){
+                                        if(status==1){
                                             Toast.makeText(login_tutor.this, "Your Account has been Rejected by the Admin. If you think this is incorrect please contact 123-456-7890", Toast.LENGTH_LONG).show();
                                         }
                                         else if(status==2){
-                                            Toast.makeText(login_tutor.this, "Your Account has been Approved. Welcome!",Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(login_tutor.this, "Your Account has been Approved. Welcome!",Toast.LENGTH_LONG).show();
                                             Intent intent = new Intent(login_tutor.this, welcome_student.class);
                                             startActivity(intent);
                                         }

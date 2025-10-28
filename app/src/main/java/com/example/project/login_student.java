@@ -72,7 +72,7 @@ public class login_student extends AppCompatActivity {
                                             Toast.makeText(login_student.this, "Your Account has been Rejected by the Admin. If you think this is incorrect please contact 123-456-7890", Toast.LENGTH_LONG).show();
                                         }
                                         else if(status==2){
-                                            Toast.makeText(login_student.this, "Your Account has been Approved. Welcome!",Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(login_student.this, "Your Account has been Approved. Welcome!",Toast.LENGTH_LONG).show();
                                             Intent intent = new Intent(login_student.this, welcome_student.class);
                                             startActivity(intent);
                                         }
