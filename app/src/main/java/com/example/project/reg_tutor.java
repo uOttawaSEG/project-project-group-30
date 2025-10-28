@@ -94,8 +94,7 @@ public class reg_tutor extends AppCompatActivity {
             if(txtEmailTutor.getText().toString().trim().contains("@")){
                 gemail = true;
 
-            }
-            else{
+            }else{
                 Toast.makeText(this, "Invalid email address", Toast.LENGTH_SHORT).show();
                 gemail = false;
 
