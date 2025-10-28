@@ -31,7 +31,7 @@ public class RejectedFragment extends Fragment {
 
         accountsRef = FirebaseDatabase.getInstance().getReference("Accounts");
 
-        accountsRef.orderByChild("Status").equalTo("1")
+        accountsRef.orderByChild("Status").equalTo(1)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -70,7 +70,7 @@ public class RejectedFragment extends Fragment {
                                         .setTitle(first + " " + last)
                                         .setMessage(message.toString())
                                         .setPositiveButton("Approve", (dialog, which) -> {
-                                            ds.getRef().child("Status").setValue("2")
+                                            ds.getRef().child("Status").setValue(2)
                                                     .addOnSuccessListener(aVoid -> {
                                                         Toast.makeText(getContext(), "Approved " + first + " " + last, Toast.LENGTH_SHORT).show();
                                                         refreshFragment();

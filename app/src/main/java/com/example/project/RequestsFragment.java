@@ -28,8 +28,7 @@ public class RequestsFragment extends Fragment {
 
         accountsRef = FirebaseDatabase.getInstance().getReference("Accounts");
 
-        // Get all pending requests (Status == "0")
-        accountsRef.orderByChild("Status").equalTo("0")
+        accountsRef.orderByChild("Status").equalTo(0)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -68,14 +67,14 @@ public class RequestsFragment extends Fragment {
                                         .setTitle(first + " " + last)
                                         .setMessage(message.toString())
                                         .setPositiveButton("Approve", (dialog, which) -> {
-                                            ds.getRef().child("Status").setValue("2")
+                                            ds.getRef().child("Status").setValue(2)
                                                     .addOnSuccessListener(aVoid -> {
                                                         Toast.makeText(getContext(), "Approved " + first + " " + last, Toast.LENGTH_SHORT).show();
                                                         refreshFragment();
                                                     });
                                         })
                                         .setNegativeButton("Reject", (dialog, which) -> {
-                                            ds.getRef().child("Status").setValue("1")
+                                            ds.getRef().child("Status").setValue(1)
                                                     .addOnSuccessListener(aVoid -> {
                                                         Toast.makeText(getContext(), "Rejected " + first + " " + last, Toast.LENGTH_SHORT).show();
                                                         refreshFragment();

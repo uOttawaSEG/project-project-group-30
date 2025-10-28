@@ -31,7 +31,7 @@ public class ApprovedFragment extends Fragment {
 
         accountsRef = FirebaseDatabase.getInstance().getReference("Accounts");
 
-        accountsRef.orderByChild("Status").equalTo("2")
+        accountsRef.orderByChild("Status").equalTo(2)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
