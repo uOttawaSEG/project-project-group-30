@@ -96,10 +96,10 @@ public class welcome_tutor extends AppCompatActivity {
                     String startTime=start.getText().toString();
                     String endTime = stop.getText().toString();
 
-                    if(startTime!=null||Integer.valueOf(startTime)> 2400 || Integer.valueOf(startTime)<0){
+                    if(startTime.isEmpty() ||Integer.valueOf(startTime)> 2400 || Integer.valueOf(startTime)<0){
                         Toast.makeText(welcome_tutor.this, "Enter a valid start time", Toast.LENGTH_SHORT).show();
                     }
-                    else if(endTime!=null||Integer.valueOf(endTime)> 2400 || Integer.valueOf(endTime)<0){
+                    else if(endTime.isEmpty()||Integer.valueOf(endTime)> 2400 || Integer.valueOf(endTime)<0){
                         Toast.makeText(welcome_tutor.this, "Enter a valid end time", Toast.LENGTH_SHORT).show();
                     }
                     else if(Integer.valueOf(startTime)>Integer.valueOf(endTime)){
@@ -111,6 +111,7 @@ public class welcome_tutor extends AppCompatActivity {
                         diff+=Integer.valueOf(endTime.substring(0,2))*60+Integer.valueOf(endTime.substring(3,5));
                         diff-=Integer.valueOf(startTime.substring(0,2))*60+Integer.valueOf(startTime.substring(3,5));
                         if(diff==30){
+                            dialog.dismiss(); // Close the dialog
 
                         }
                         else{
@@ -120,7 +121,6 @@ public class welcome_tutor extends AppCompatActivity {
                     }
 
 
-                    dialog.dismiss(); // Close the dialog
                 }
             });
             AlertDialog alertDialog = builder.create();
