@@ -54,7 +54,7 @@ public class welcome_tutor extends AppCompatActivity {
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                 String date = dayOfMonth + "-" + (month + 1) + "-" + year;
                 dateView.setText(date);
-                slectedDate = year+"/"+month+"/"+date;
+                slectedDate = year+"/"+(month-1)+"/"+date;
 
             }
         });
