@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<String> requests = new ArrayList<String>();
     public static ArrayList<String> rejected = new ArrayList<String>();
 
-
+    static String signedInAs = "";
     abstract static class user{
         user currentUser;
         String first;
