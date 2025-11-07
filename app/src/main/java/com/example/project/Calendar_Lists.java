@@ -27,7 +27,7 @@ public class Calendar_Lists extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         btnAddAvail = findViewById(R.id.btnAddAvail);
-        ViewPaer
+        //ViewPaer
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser User = mAuth.getCurrentUser();
         String userId = User.getUid();
