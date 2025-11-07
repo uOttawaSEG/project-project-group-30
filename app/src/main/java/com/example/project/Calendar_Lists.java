@@ -27,7 +27,7 @@ public class Calendar_Lists extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser User = mAuth.getCurrentUser();
         String userId = User.getUid();
-        FirebaseDatabase.getInstance().getReference("Accounts").child(userId).child("Status").get().addOnCompleteListener(statusTask->{
+
 
             EdgeToEdge.enable(this);
         setContentView(R.layout.activity_calendar_lists);
@@ -37,4 +37,5 @@ public class Calendar_Lists extends AppCompatActivity {
             return insets;
         });
     }
-}
+    }
+
