@@ -123,27 +123,25 @@ public class welcome_tutor extends AppCompatActivity {
 
                             }
                             else {
-                                try {
-                                    if(dateFormatyd.parse(dateFormatyd.format(date)).after(dateFormatyd.parse(startTime.substring(0,2)+"/"+startTime.substring(2,4)))){
-                                        Toast.makeText(welcome_tutor.this, "This time has already happened", Toast.LENGTH_SHORT).show();
+                                int curHour = date.getHours();
+                                int curMin = date.getMinutes();
+                                if(curHour*60+curMin > Integer.valueOf(startTime.substring(0,2))*60+Integer.valueOf(startTime.substring(2,4))){
+                                    Toast.makeText(welcome_tutor.this, "This time has already happened", Toast.LENGTH_SHORT).show();
+
+                                }
+                                else{
+                                    int diff = 0;
+                                    diff+=Integer.valueOf(endTime.substring(0,2))*60+Integer.valueOf(endTime.substring(2,4));
+                                    diff-=Integer.valueOf(startTime.substring(0,2))*60+Integer.valueOf(startTime.substring(2,4));
+                                    if(diff==30){
+                                        Toast.makeText(welcome_tutor.this, "Date added", Toast.LENGTH_SHORT).show();
+
+                                        dialog.dismiss(); // Close the dialog
 
                                     }
                                     else{
-                                        int diff = 0;
-                                        diff+=Integer.valueOf(endTime.substring(0,2))*60+Integer.valueOf(endTime.substring(2,4));
-                                        diff-=Integer.valueOf(startTime.substring(0,2))*60+Integer.valueOf(startTime.substring(2,4));
-                                        if(diff==30){
-                                            Toast.makeText(welcome_tutor.this, "Date added", Toast.LENGTH_SHORT).show();
-
-                                            dialog.dismiss(); // Close the dialog
-
-                                        }
-                                        else{
-                                            Toast.makeText(welcome_tutor.this, "The session must last 30 minutes", Toast.LENGTH_SHORT).show();
-                                        }
+                                        Toast.makeText(welcome_tutor.this, "The session must last 30 minutes", Toast.LENGTH_SHORT).show();
                                     }
-                                } catch (ParseException e) {
-                                    throw new RuntimeException(e);
                                 }
                             }
                         }
