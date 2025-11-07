@@ -55,7 +55,7 @@ public class welcome_tutor extends AppCompatActivity {
                 slectedDate=year+month+dayOfMonth +"";
             }
         });
-        calendar.setMinDate(1762473600000L);
+        //calendar.setMinDate(1762473600000L);
 
 
 // when the button is clicked it does thew following instructions
@@ -72,7 +72,7 @@ public class welcome_tutor extends AppCompatActivity {
 
         btnCreate.setOnClickListener(v ->{
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(welcome_tutor.this);
             builder.setTitle("Create a session");
             builder.setMessage("Add a 30 minute time slot in millitary time ex: 1205 for 12:05pm");
             Context context = builder.getContext();
@@ -108,8 +108,8 @@ public class welcome_tutor extends AppCompatActivity {
                     }
                     else{
                         int diff = 0;
-                        diff+=Integer.valueOf(endTime.substring(0,2))*60+Integer.valueOf(endTime.substring(3,5));
-                        diff-=Integer.valueOf(startTime.substring(0,2))*60+Integer.valueOf(startTime.substring(3,5));
+                        diff+=Integer.valueOf(endTime.substring(0,2))*60+Integer.valueOf(endTime.substring(2,4));
+                        diff-=Integer.valueOf(startTime.substring(0,2))*60+Integer.valueOf(startTime.substring(2,4));
                         if(diff==30){
                             dialog.dismiss(); // Close the dialog
 
