@@ -87,6 +87,7 @@ public class welcome_tutor extends AppCompatActivity {
             start.setInputType(InputType.TYPE_CLASS_NUMBER);
             layout.addView(stop);
             //builder.setView(stop);
+            builder.setView(layout);
 
             builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
