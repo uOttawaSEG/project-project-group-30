@@ -14,19 +14,12 @@
         android:id="@+id/txtLoggedInTutor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="24dp"
         android:text="Logged in as: Tutor"
         android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@android:color/black"
-        android:text="Log out"
-        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/date_view"
@@ -50,4 +43,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnCreate"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/black"
+        android:text="Add time slot"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/btnCheck"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/black"
+        android:text="Check times"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/black"
+        android:text="Log out"
+        android:textSize="24sp" />
 </LinearLayout>
