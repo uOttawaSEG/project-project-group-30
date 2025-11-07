@@ -54,7 +54,8 @@ public class welcome_tutor extends AppCompatActivity {
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                 String date = dayOfMonth + "-" + (month + 1) + "-" + year;
                 dateView.setText(date);
-                slectedDate = year+"/"+date;
+                slectedDate = year+"/"+month+"/"+date;
+
             }
         });
         //calendar.setMinDate(1762473600000L);
@@ -74,13 +75,13 @@ public class welcome_tutor extends AppCompatActivity {
 
         btnCreate.setOnClickListener(v ->{
          Date date =new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/dd");
+        SimpleDateFormat dateFormatyd = new SimpleDateFormat("yyyy/MM/dd");
             try {
                 if(slectedDate==""){
                     Toast.makeText(welcome_tutor.this, "You must select a date", Toast.LENGTH_SHORT).show();
 
                 }
-                else if(dateFormat.parse(dateFormat.format(date)).after(dateFormat.parse(slectedDate))){
+                else if(dateFormatyd.parse(dateFormatyd.format(date)).after(dateFormatyd.parse(slectedDate))){
                     Toast.makeText(welcome_tutor.this, "Enter a date that has not already passed", Toast.LENGTH_SHORT).show();
                 }
                 else{
@@ -108,6 +109,8 @@ public class welcome_tutor extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int id) {
                             String startTime=start.getText().toString();
                             String endTime = stop.getText().toString();
+                            SimpleDateFormat dateFormathm = new SimpleDateFormat("HH/mm");
+
 
                             if(startTime.isEmpty() ||Integer.valueOf(startTime)> 2400 || Integer.valueOf(startTime)<0){
                                 Toast.makeText(welcome_tutor.this, "Enter a valid start time", Toast.LENGTH_SHORT).show();
@@ -119,21 +122,30 @@ public class welcome_tutor extends AppCompatActivity {
                                 Toast.makeText(welcome_tutor.this, "The session must end after it starts", Toast.LENGTH_SHORT).show();
 
                             }
-                            else{
-                                int diff = 0;
-                                diff+=Integer.valueOf(endTime.substring(0,2))*60+Integer.valueOf(endTime.substring(2,4));
-                                diff-=Integer.valueOf(startTime.substring(0,2))*60+Integer.valueOf(startTime.substring(2,4));
-                                if(diff==30){
-                                    dialog.dismiss(); // Close the dialog
+                            else {
+                                try {
+                                    if(dateFormatyd.parse(dateFormatyd.format(date)).after(dateFormatyd.parse(startTime.substring(0,2)+"/"+startTime.substring(2,4)))){
+                                        Toast.makeText(welcome_tutor.this, "This time has already happened", Toast.LENGTH_SHORT).show();
 
-                                }
-                                else{
-                                    Toast.makeText(welcome_tutor.this, "The session must last 30 minutes", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else{
+                                        int diff = 0;
+                                        diff+=Integer.valueOf(endTime.substring(0,2))*60+Integer.valueOf(endTime.substring(2,4));
+                                        diff-=Integer.valueOf(startTime.substring(0,2))*60+Integer.valueOf(startTime.substring(2,4));
+                                        if(diff==30){
+                                            Toast.makeText(welcome_tutor.this, "Date added", Toast.LENGTH_SHORT).show();
 
+                                            dialog.dismiss(); // Close the dialog
+
+                                        }
+                                        else{
+                                            Toast.makeText(welcome_tutor.this, "The session must last 30 minutes", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                } catch (ParseException e) {
+                                    throw new RuntimeException(e);
                                 }
                             }
-
-
                         }
                     });
                     AlertDialog alertDialog = builder.create();
