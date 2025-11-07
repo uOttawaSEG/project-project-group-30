@@ -80,11 +80,13 @@ public class welcome_tutor extends AppCompatActivity {
             layout.setOrientation(LinearLayout.VERTICAL);
 
             final EditText start = new EditText(context);
+            start.setHint("Start time");
             start.setInputType(InputType.TYPE_CLASS_NUMBER);
             layout.addView(start);
             //builder.setView(start);
             final EditText stop = new EditText(context);
             start.setInputType(InputType.TYPE_CLASS_NUMBER);
+            stop.setHint("End time");
             layout.addView(stop);
             //builder.setView(stop);
             builder.setView(layout);
