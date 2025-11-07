@@ -4,6 +4,7 @@ import static java.lang.Boolean.valueOf;
 import static java.security.AccessController.getContext;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -12,6 +13,7 @@ import android.text.InputType;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,13 +75,18 @@ public class welcome_tutor extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Create a session");
             builder.setMessage("Add a 30 minute time slot in millitary time ex: 1205 for 12:05pm");
+            Context context = builder.getContext();
+            LinearLayout layout = new LinearLayout(context);
+            layout.setOrientation(LinearLayout.VERTICAL);
 
-            final EditText start = new EditText(this);
+            final EditText start = new EditText(context);
             start.setInputType(InputType.TYPE_CLASS_NUMBER);
-            builder.setView(start);
-            final EditText stop = new EditText(this);
+            layout.addView(start);
+            //builder.setView(start);
+            final EditText stop = new EditText(context);
             start.setInputType(InputType.TYPE_CLASS_NUMBER);
-            builder.setView(stop);
+            layout.addView(stop);
+            //builder.setView(stop);
 
             builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
