@@ -5,8 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:gravity="center"
+    android:orientation="vertical"
     android:padding="24dp"
     tools:context=".welcome_tutor">
 
@@ -14,17 +14,40 @@
         android:id="@+id/txtLoggedInTutor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="48sp"
-        android:textStyle="bold"
+        android:layout_marginBottom="64dp"
         android:text="Logged in as: Tutor"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginBottom="64dp"/>
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnLogout"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/black"
         android:text="Log out"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/date_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set the Date"
         android:textSize="24sp"
-        android:backgroundTint="@android:color/black" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/calendar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Add CalendarView to display the Calendar -->
+    <CalendarView
+        android:id="@+id/calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </LinearLayout>
