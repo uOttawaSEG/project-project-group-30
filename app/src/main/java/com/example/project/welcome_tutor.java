@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,6 +24,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Date;
 import java.sql.Time;
 import java.text.ParseException;
@@ -31,17 +36,27 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 
 public class welcome_tutor extends AppCompatActivity {
     // button for logging out the tutor and returning to the main screen
     private Button btnLogout;
     public String slectedDate="";
+
+    FirebaseAuth mAuth;
+
+    FirebaseUser user;
+    public String userId;
+    public String  dateID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // set the UI layout for this screen to activity_welcome_tutor.xml
         setContentView(R.layout.activity_welcome_tutor);
         // Link the button variable to the actual button in the layout
+        mAuth=FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+         String userId = user.getUid();
 
         btnLogout = findViewById(R.id.btnLogout);
         CalendarView calendar = findViewById(R.id.calendar);
@@ -55,6 +70,7 @@ public class welcome_tutor extends AppCompatActivity {
                 String date = dayOfMonth + "-" + (month + 1) + "-" + year;
                 dateView.setText(date);
                 slectedDate = year+"/"+(month+1)+"/"+dayOfMonth;
+                 dateID=month+dayOfMonth+"";
 
             }
         });
@@ -97,25 +113,29 @@ public class welcome_tutor extends AppCompatActivity {
                     start.setHint("Start time");
                     start.setInputType(InputType.TYPE_CLASS_NUMBER);
                     layout.addView(start);
-                    //builder.setView(start);
+                    //add end time box
                     final EditText stop = new EditText(context);
                     start.setInputType(InputType.TYPE_CLASS_NUMBER);
                     stop.setHint("End time");
                     layout.addView(stop);
-                    //builder.setView(stop);
+                    //add a checkbox
+                    final CheckBox checkBoxAuto = new CheckBox(context);
+                    checkBoxAuto.setText("Auto accept students");
+                    checkBoxAuto.setChecked(false);
+                    layout.addView(checkBoxAuto);
                     builder.setView(layout);
-
                     builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             String startTime=start.getText().toString();
                             String endTime = stop.getText().toString();
                             SimpleDateFormat dateFormathm = new SimpleDateFormat("HH/mm");
 
+                            boolean autoAccept = checkBoxAuto.isChecked();
 
-                            if(startTime.isEmpty() ||Integer.valueOf(startTime)> 2400 || Integer.valueOf(startTime)<0){
+                            if(startTime.isEmpty() ||Integer.valueOf(startTime)> 2400 || Integer.valueOf(startTime)<0 || startTime.length()!=4){
                                 Toast.makeText(welcome_tutor.this, "Enter a valid start time", Toast.LENGTH_SHORT).show();
                             }
-                            else if(endTime.isEmpty()||Integer.valueOf(endTime)> 2400 || Integer.valueOf(endTime)<0){
+                            else if(endTime.isEmpty()||Integer.valueOf(endTime)> 2400 || Integer.valueOf(endTime)<0 || endTime.length()!=4){
                                 Toast.makeText(welcome_tutor.this, "Enter a valid end time", Toast.LENGTH_SHORT).show();
                             }
                             else if(Integer.valueOf(startTime)>Integer.valueOf(endTime)){
@@ -125,23 +145,35 @@ public class welcome_tutor extends AppCompatActivity {
                             else {
                                 int curHour = date.getHours();
                                 int curMin = date.getMinutes();
-                                if(curHour*60+curMin > Integer.valueOf(startTime.substring(0,2))*60+Integer.valueOf(startTime.substring(2,4))){
-                                    Toast.makeText(welcome_tutor.this, "This time has already happened", Toast.LENGTH_SHORT).show();
-
-                                }
-                                else{
-                                    int diff = 0;
-                                    diff+=Integer.valueOf(endTime.substring(0,2))*60+Integer.valueOf(endTime.substring(2,4));
-                                    diff-=Integer.valueOf(startTime.substring(0,2))*60+Integer.valueOf(startTime.substring(2,4));
-                                    if(diff==30){
-                                        Toast.makeText(welcome_tutor.this, "Date added", Toast.LENGTH_SHORT).show();
-
-                                        dialog.dismiss(); // Close the dialog
+                                try {
+                                    if(curHour*60+curMin > Integer.valueOf(startTime.substring(0,2))*60+Integer.valueOf(startTime.substring(2,4))&&dateFormatyd.parse(dateFormatyd.format(date)).equals(dateFormatyd.parse(slectedDate))){
+                                        Toast.makeText(welcome_tutor.this, "This time has already happened", Toast.LENGTH_SHORT).show();
 
                                     }
                                     else{
-                                        Toast.makeText(welcome_tutor.this, "The session must last 30 minutes", Toast.LENGTH_SHORT).show();
+                                        int diff = 0;
+                                        diff+=Integer.valueOf(endTime.substring(0,2))*60+Integer.valueOf(endTime.substring(2,4));
+                                        diff-=Integer.valueOf(startTime.substring(0,2))*60+Integer.valueOf(startTime.substring(2,4));
+                                        if(diff==30){
+                                            Toast.makeText(welcome_tutor.this, "Date added", Toast.LENGTH_SHORT).show();
+                                            HashMap<String,Object> dateMap = new HashMap<>();
+                                            String finalDate=slectedDate+"/"+startTime.substring(0,2)+"/"+startTime.substring(2,4);
+                                            dateMap.put("Date",finalDate);
+                                            dateMap.put("Tutor",userId);
+                                            dateMap.put("Student", "Empty");
+                                            dateMap.put("IsTaken","no");
+                                            dateMap.put("AutoAccept",autoAccept );
+                                            FirebaseDatabase.getInstance().getReference().child("Dates").child(userId+dateID+startTime).updateChildren(dateMap);
+
+                                            dialog.dismiss(); // Close the dialog
+
+                                        }
+                                        else{
+                                            Toast.makeText(welcome_tutor.this, "The session must last 30 minutes", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
+                                } catch (ParseException e) {
+                                    throw new RuntimeException(e);
                                 }
                             }
                         }
@@ -154,5 +186,7 @@ public class welcome_tutor extends AppCompatActivity {
             }
 
         });
+
         }
+
     }
