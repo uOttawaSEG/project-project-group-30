@@ -26,6 +26,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Date;
@@ -155,18 +156,32 @@ public class welcome_tutor extends AppCompatActivity {
                                         diff+=Integer.valueOf(endTime.substring(0,2))*60+Integer.valueOf(endTime.substring(2,4));
                                         diff-=Integer.valueOf(startTime.substring(0,2))*60+Integer.valueOf(startTime.substring(2,4));
                                         if(diff==30){
-                                            Toast.makeText(welcome_tutor.this, "Date added", Toast.LENGTH_SHORT).show();
-                                            HashMap<String,Object> dateMap = new HashMap<>();
-                                            String finalDate=slectedDate+"/"+startTime.substring(0,2)+"/"+startTime.substring(2,4);
-                                            dateMap.put("Date",finalDate);
-                                            dateMap.put("Tutor",userId);
-                                            dateMap.put("Student", "Empty");
-                                            dateMap.put("IsTaken","no");
-                                            dateMap.put("AutoAccept",autoAccept );
-                                            FirebaseDatabase.getInstance().getReference().child("Dates").child(userId+dateID+startTime).updateChildren(dateMap);
+                                            FirebaseDatabase.getInstance().getReference().child("Dates").get().addOnSuccessListener(dataSnapshot -> {
+                                                if (dataSnapshot.exists()) {
+                                                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                                        String date = ds.child("Date").getValue(String.class);
+                                                        // String tutor = ds.child("Tutor").getValue(String.class); this is for later(Deliverable 4).
+                                                        assert date != null;
+                                                        if (Integer.parseInt(startTime) >= Integer.parseInt(date.substring(9).replace("/", "")) && Integer.parseInt(startTime) <= Integer.parseInt(date.substring(9).replace("/", "") + 30)) {
+                                                            Toast.makeText(welcome_tutor.this, "This time slot is already taken", Toast.LENGTH_SHORT).show();
+                                                        } else {
+                                                            Toast.makeText(welcome_tutor.this, "Date added", Toast.LENGTH_SHORT).show();
+                                                            HashMap<String, Object> dateMap = new HashMap<>();
+                                                            String finalDate = slectedDate + "/" + startTime.substring(0, 2) + "/" + startTime.substring(2, 4);
+                                                            dateMap.put("Date", finalDate);
+                                                            dateMap.put("Tutor", userId);
+                                                            dateMap.put("Student", "Empty");
+                                                            dateMap.put("IsTaken", "no");
+                                                            dateMap.put("AutoAccept", autoAccept);
+                                                            FirebaseDatabase.getInstance().getReference().child("Dates").child(userId + dateID + startTime).updateChildren(dateMap);
 
-                                            dialog.dismiss(); // Close the dialog
+                                                            dialog.dismiss(); // Close the dialog
+                                                        }
 
+
+                                                    }
+                                                }
+                                            });
                                         }
                                         else{
                                             Toast.makeText(welcome_tutor.this, "The session must last 30 minutes", Toast.LENGTH_SHORT).show();
