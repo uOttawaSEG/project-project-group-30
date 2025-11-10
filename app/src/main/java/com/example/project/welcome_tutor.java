@@ -166,10 +166,10 @@ public class welcome_tutor extends AppCompatActivity {
                                                             continue;
                                                         }
                                                         // String tutor = ds.child("Tutor").getValue(String.class); this is for later(Deliverable 4).
-                                                        int btime = Integer.parseInt(Objects.requireNonNull(ds.child("Start").getValue(String.class)));
-                                                        int etime = Integer.parseInt(Objects.requireNonNull(ds.child("End").getValue(String.class)));
-                                                        int pstart = Integer.parseInt(startTime);
-                                                        int pend = Integer.parseInt(endTime);
+                                                        int btime = Integer.parseInt(Objects.requireNonNull(ds.child("Start").getValue(String.class)).substring(0, 2))*60+Integer.parseInt(Objects.requireNonNull(ds.child("Start").getValue(String.class).substring(2, 4)));
+                                                        int etime = Integer.parseInt(Objects.requireNonNull(ds.child("End").getValue(String.class)).substring(0, 2))*60+Integer.parseInt(Objects.requireNonNull(ds.child("End").getValue(String.class).substring(2, 4)));
+                                                        int pstart = Integer.parseInt(startTime.substring(0, 2))*60+Integer.parseInt(startTime.substring(2, 4));
+                                                        int pend = Integer.parseInt(endTime.substring(0, 2))*60+Integer.parseInt(endTime.substring(2, 4));
 
 
                                                         if (date.equals(slectedDate)){
