@@ -38,6 +38,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class welcome_tutor extends AppCompatActivity {
     // button for logging out the tutor and returning to the main screen
@@ -56,8 +57,8 @@ public class welcome_tutor extends AppCompatActivity {
         setContentView(R.layout.activity_welcome_tutor);
         // Link the button variable to the actual button in the layout
         mAuth=FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-         String userId = user.getUid();
+         user = mAuth.getCurrentUser();
+          userId = user.getUid();
 
         btnLogout = findViewById(R.id.btnLogout);
         CalendarView calendar = findViewById(R.id.calendar);
@@ -75,7 +76,6 @@ public class welcome_tutor extends AppCompatActivity {
 
             }
         });
-        //calendar.setMinDate(1762473600000L);
 
 
 // when the button is clicked it does thew following instructions
@@ -94,7 +94,7 @@ public class welcome_tutor extends AppCompatActivity {
          Date date =new Date();
         SimpleDateFormat dateFormatyd = new SimpleDateFormat("yyyy/MM/dd");
             try {
-                if(slectedDate==""){
+                if(slectedDate.isEmpty()) {
                     Toast.makeText(welcome_tutor.this, "You must select a date", Toast.LENGTH_SHORT).show();
 
                 }
@@ -157,30 +157,50 @@ public class welcome_tutor extends AppCompatActivity {
                                         diff-=Integer.valueOf(startTime.substring(0,2))*60+Integer.valueOf(startTime.substring(2,4));
                                         if(diff==30){
                                             FirebaseDatabase.getInstance().getReference().child("Dates").get().addOnSuccessListener(dataSnapshot -> {
+                                                boolean taken = false;
+                                                HashMap<String, Object> dateMap = null;
                                                 if (dataSnapshot.exists()) {
                                                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                                         String date = ds.child("Date").getValue(String.class);
-                                                        // String tutor = ds.child("Tutor").getValue(String.class); this is for later(Deliverable 4).
-                                                        assert date != null;
-                                                        if (Integer.parseInt(startTime) >= Integer.parseInt(date.substring(9).replace("/", "")) && Integer.parseInt(startTime) <= Integer.parseInt(date.substring(9).replace("/", "") + 30)) {
-                                                            Toast.makeText(welcome_tutor.this, "This time slot is already taken", Toast.LENGTH_SHORT).show();
-                                                        } else {
-                                                            Toast.makeText(welcome_tutor.this, "Date added", Toast.LENGTH_SHORT).show();
-                                                            HashMap<String, Object> dateMap = new HashMap<>();
-                                                            String finalDate = slectedDate + "/" + startTime.substring(0, 2) + "/" + startTime.substring(2, 4);
-                                                            dateMap.put("Date", finalDate);
-                                                            dateMap.put("Tutor", userId);
-                                                            dateMap.put("Student", "Empty");
-                                                            dateMap.put("IsTaken", "no");
-                                                            dateMap.put("AutoAccept", autoAccept);
-                                                            FirebaseDatabase.getInstance().getReference().child("Dates").child(userId + dateID + startTime).updateChildren(dateMap);
-
-                                                            dialog.dismiss(); // Close the dialog
+                                                        if (date == null) {
+                                                            continue;
                                                         }
+                                                        // String tutor = ds.child("Tutor").getValue(String.class); this is for later(Deliverable 4).
+                                                        int btime = Integer.parseInt(Objects.requireNonNull(ds.child("Start").getValue(String.class)));
+                                                        int etime = Integer.parseInt(Objects.requireNonNull(ds.child("End").getValue(String.class)));
+                                                        int pstart = Integer.parseInt(startTime);
+                                                        int pend = Integer.parseInt(endTime);
 
 
+                                                        if (date.equals(slectedDate)){
+                                                            if (pstart >= btime && pstart < etime || pend >= btime && pend < etime) {
+                                                                taken = true;
+                                                                break;
+                                                            }
+                                                        }
                                                     }
+
+
                                                 }
+                                                if (!taken) {
+                                                    Toast.makeText(welcome_tutor.this, "Date added", Toast.LENGTH_SHORT).show();
+                                                    dateMap = new HashMap<>();
+                                                    //String finalDate = slectedDate + "/" + startTime.substring(0, 2) + "/" + startTime.substring(2, 4);
+                                                    dateMap.put("Date", slectedDate);
+                                                    dateMap.put("Tutor", userId);
+                                                    dateMap.put("Student", "Empty");
+                                                    dateMap.put("IsTaken", "no");
+                                                    dateMap.put("AutoAccept", autoAccept);
+                                                    dateMap.put("Start", startTime);
+                                                    dateMap.put("End", endTime);
+                                                    FirebaseDatabase.getInstance().getReference().child("Dates").child(userId + dateID + startTime).setValue(dateMap);
+
+                                                } else {
+                                                    Toast.makeText(welcome_tutor.this, "This slot is already taken", Toast.LENGTH_SHORT).show();
+                                                }
+                                                dialog.dismiss();
+
+
                                             });
                                         }
                                         else{
@@ -199,6 +219,7 @@ public class welcome_tutor extends AppCompatActivity {
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
+
 
         });
 
