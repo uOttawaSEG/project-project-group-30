@@ -57,8 +57,8 @@ public class welcome_tutor extends AppCompatActivity {
         setContentView(R.layout.activity_welcome_tutor);
         // Link the button variable to the actual button in the layout
         mAuth=FirebaseAuth.getInstance();
-         user = mAuth.getCurrentUser();
-          userId = user.getUid();
+        user = mAuth.getCurrentUser();
+        userId = user.getUid();
 
         btnLogout = findViewById(R.id.btnLogout);
         CalendarView calendar = findViewById(R.id.calendar);
@@ -72,7 +72,7 @@ public class welcome_tutor extends AppCompatActivity {
                 String date = dayOfMonth + "-" + (month + 1) + "-" + year;
                 dateView.setText(date);
                 slectedDate = year+"/"+(month+1)+"/"+dayOfMonth;
-                 dateID=month+dayOfMonth+"";
+                dateID=month+dayOfMonth+"";
 
             }
         });
@@ -91,8 +91,8 @@ public class welcome_tutor extends AppCompatActivity {
         });
 
         btnCreate.setOnClickListener(v ->{
-         Date date =new Date();
-        SimpleDateFormat dateFormatyd = new SimpleDateFormat("yyyy/MM/dd");
+            Date date =new Date();
+            SimpleDateFormat dateFormatyd = new SimpleDateFormat("yyyy/MM/dd");
             try {
                 if(slectedDate.isEmpty()) {
                     Toast.makeText(welcome_tutor.this, "You must select a date", Toast.LENGTH_SHORT).show();
@@ -215,7 +215,7 @@ public class welcome_tutor extends AppCompatActivity {
                     });
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
-            }
+                }
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
@@ -223,6 +223,6 @@ public class welcome_tutor extends AppCompatActivity {
 
         });
 
-        }
-
     }
+
+}
