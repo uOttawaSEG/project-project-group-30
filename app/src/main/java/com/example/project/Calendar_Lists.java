@@ -1,14 +1,14 @@
 package com.example.project;
 
-import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -18,106 +18,108 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Calendar_Lists extends AppCompatActivity {
-    private Button btnAddAvail;
-    FirebaseAuth mAuth;
-    DatabaseReference datesRef;
+    private Button btnBack;
+    private ListView listSessions;
+    private FirebaseAuth mAuth;
+    private DatabaseReference databaseRef;
+    private ArrayList<String> sessionList = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> dataList = new ArrayList<>();
 
+    private ArrayAdapter<String> adapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        btnAddAvail = findViewById(R.id.btnAddAvail);
-        //ViewPaer
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser User = mAuth.getCurrentUser();
-        String userId = User.getUid();
-
-
-            EdgeToEdge.enable(this);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_calendar_lists);
-        LinearLayout layout = findViewById(R.id.main);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
+        btnBack = findViewById(R.id.btnBack);
+        listSessions = findViewById(R.id.listSessions);
+
         mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
+        FirebaseUser User = mAuth.getCurrentUser();
+        String userId = User.getUid();
 
-        if (user == null) {
-            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        databaseRef = FirebaseDatabase.getInstance().getReference("Dates");
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, sessionList);
+        listSessions.setAdapter(adapter);
+        loadSessions(userId);
 
-        datesRef = FirebaseDatabase.getInstance().getReference("Dates");
+        listSessions.setOnItemClickListener((parent, view, position, id) -> {
+            HashMap<String, String> sessions = dataList.get(position);
+            String isTaken = sessions.get("IsTaken");
+            String student = sessions.get("Student");
 
-        // Load all dates belonging to this tutor
-        datesRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                layout.removeAllViews();
-
-                boolean hasSlots = false;
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    String tutorId = ds.child("Tutor").getValue(String.class);
-
-                    // Only show slots created by this tutor
-                    if (tutorId != null && tutorId.equals(userId)) {
-                        hasSlots = true;
-                        String date = ds.child("Date").getValue(String.class);
-                        String start = ds.child("Start").getValue(String.class);
-                        String end = ds.child("End").getValue(String.class);
-                        String slotId = ds.getKey();
-
-                        // Display button for each slot
-                        Button btn = new Button(Calendar_Lists.this);
-                        btn.setText(date + " | " + start + " - " + end);
-                        btn.setAllCaps(false);
-
-                        // On click → ask to delete
-                        btn.setOnClickListener(v -> {
-                            new AlertDialog.Builder(Calendar_Lists.this)
-                                    .setTitle("Delete Time Slot")
-                                    .setMessage("Do you want to delete this time slot?\n" + date + " | " + start + " - " + end)
-                                    .setPositiveButton("Yes", (dialog, which) -> {
-                                        datesRef.child(slotId).removeValue()
-                                                .addOnSuccessListener(aVoid -> {
-                                                    Toast.makeText(Calendar_Lists.this, "Time slot deleted.", Toast.LENGTH_SHORT).show();
-                                                })
-                                                .addOnFailureListener(e -> {
-                                                    Toast.makeText(Calendar_Lists.this, "Failed to delete slot.", Toast.LENGTH_SHORT).show();
-                                                });
-                                    })
-                                    .setNegativeButton("No", null)
-                                    .show();
-                        });
-
-                        layout.addView(btn);
-                    }
-                }
-
-                if (!hasSlots) {
-                    Button noSlots = new Button(Calendar_Lists.this);
-                    noSlots.setText("No available time slots.");
-                    noSlots.setEnabled(false);
-                    layout.addView(noSlots);
-                }
+            AlertDialog.Builder dialog = new AlertDialog.Builder(Calendar_Lists.this);
+            dialog.setTitle("Session Details");
+            if(isTaken != null && isTaken.equals("yes") && student != null && !student.equals("Empty")){
+                dialog.setMessage("StudentID: " + student);
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(Calendar_Lists.this, "Failed to load slots.", Toast.LENGTH_SHORT).show();
+            else{
+                dialog.setMessage("No student yet."); 
             }
+            dialog.setPositiveButton("OK", (d, which)-> d.dismiss());
+            dialog.show();
         });
+
+        btnBack.setOnClickListener(v->{
+            Intent intent = new Intent(Calendar_Lists.this, welcome_tutor.class);
+            startActivity(intent);
+            finish();
+        });
+
+
+    }
+
+    private void loadSessions(String userID){
+        databaseRef.get().addOnSuccessListener(dataSnapshot ->{
+            sessionList.clear();
+            dataList.clear();
+
+            for(DataSnapshot ds : dataSnapshot.getChildren()){
+                String tutorID = ds.child("Tutor").getValue(String.class);
+                if(tutorID != null && tutorID.equals(userID)){
+                    String date = ds.child("Date").getValue(String.class);
+                    String start = ds.child("Start").getValue(String.class);
+                    String end = ds.child("End").getValue(String.class);
+                    String isTaken = ds.child("IsTaken").getValue(String.class);
+                    String student = ds.child("Student").getValue(String.class);
+
+                    HashMap<String, String> sessionMap = new HashMap<>();
+                    sessionMap.put("Date", date);
+                    sessionMap.put("Start", start);
+                    sessionMap.put("End", end);
+                    sessionMap.put("IsTaken", isTaken);
+                    sessionMap.put("Student", student);
+
+                    dataList.add(sessionMap);
+
+                    String status = (isTaken != null && isTaken.equals("yes")) ? "TAKEN" : "AVAILABLE";
+                    sessionList.add(date + " | " + start + "-" + end + " -> " + status);
+                }
+            }
+            adapter.notifyDataSetChanged();
+            if(sessionList.isEmpty()){
+                Toast.makeText(Calendar_Lists.this, "No sessions available.", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(e ->
+                Toast.makeText(Calendar_Lists.this, "Failed to load data: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+        );
     }
 }
 
