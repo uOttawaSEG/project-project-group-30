@@ -110,6 +110,11 @@ public class welcome_tutor extends AppCompatActivity {
                     LinearLayout layout = new LinearLayout(context);
                     layout.setOrientation(LinearLayout.VERTICAL);
 
+                    final EditText course_code = new EditText(context);
+                    course_code.setHint("Course code");
+                    course_code.setInputType(InputType.TYPE_CLASS_TEXT);
+                    layout.addView(course_code);
+
                     final EditText start = new EditText(context);
                     start.setHint("Start time");
                     start.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -141,6 +146,10 @@ public class welcome_tutor extends AppCompatActivity {
                             }
                             else if(Integer.valueOf(startTime)>Integer.valueOf(endTime)){
                                 Toast.makeText(welcome_tutor.this, "The session must end after it starts", Toast.LENGTH_SHORT).show();
+
+                            }
+                            else if (course_code.getTouchables().isEmpty()){
+                                Toast.makeText(welcome_tutor.this, "Enter a Course Code", Toast.LENGTH_SHORT).show();
 
                             }
                             else {
@@ -193,6 +202,7 @@ public class welcome_tutor extends AppCompatActivity {
                                                     dateMap.put("AutoAccept", autoAccept);
                                                     dateMap.put("Start", startTime);
                                                     dateMap.put("End", endTime);
+                                                    dateMap.put("Course Code", course_code);
                                                     FirebaseDatabase.getInstance().getReference().child("Dates").child(userId + dateID + startTime).setValue(dateMap);
 
                                                 } else {
