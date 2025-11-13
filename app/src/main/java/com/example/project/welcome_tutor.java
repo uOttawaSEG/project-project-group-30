@@ -48,7 +48,6 @@ public class welcome_tutor extends AppCompatActivity {
     FirebaseAuth mAuth;
 
     FirebaseUser user;
-    public String userId;
     public String  dateID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +57,7 @@ public class welcome_tutor extends AppCompatActivity {
         // Link the button variable to the actual button in the layout
         mAuth=FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-        userId = user.getUid();
+        String userId = user.getUid();
 
         btnLogout = findViewById(R.id.btnLogout);
         CalendarView calendar = findViewById(R.id.calendar);
@@ -137,6 +136,7 @@ public class welcome_tutor extends AppCompatActivity {
                             SimpleDateFormat dateFormathm = new SimpleDateFormat("HH/mm");
 
                             boolean autoAccept = checkBoxAuto.isChecked();
+
 
                             if(startTime.isEmpty() ||Integer.valueOf(startTime)> 2400 || Integer.valueOf(startTime)<0 || startTime.length()!=4){
                                 Toast.makeText(welcome_tutor.this, "Enter a valid start time", Toast.LENGTH_SHORT).show();
