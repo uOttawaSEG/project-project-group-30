@@ -175,6 +175,7 @@ public class reg_tutor extends AppCompatActivity {
                                     map.put("UserId", userId);
                                     map.put("Job", "Tutor");
                                     map.put("Status", 0);
+                                    map.put("Rating",0);
 
 
 

@@ -75,20 +75,21 @@ public class Calendar_Lists extends AppCompatActivity {
                         hasSlots = true;
 
                         String date = ds.child("Date").getValue(String.class);
+                        String Course_code= ds.child("Course Code").getValue(String.class);
                         String start = ds.child("Start").getValue(String.class);
                         String end = ds.child("End").getValue(String.class);
                         String slotId = ds.getKey();
 
                         // Display button for each slot
                         Button btn = new Button(Calendar_Lists.this);
-                        btn.setText(date + " | " + start + " - " + end);
+                        btn.setText(Course_code+ " | " + date + " | " + start + " - " + end);
                         btn.setAllCaps(false);
 
                         // On click → ask to delete
                         btn.setOnClickListener(v -> {
                             new AlertDialog.Builder(Calendar_Lists.this)
                                     .setTitle("Delete Time Slot")
-                                    .setMessage("Do you want to delete this time slot?\n" + date + " | " + start + " - " + end)
+                                    .setMessage("Do you want to delete this time slot?\n" + Course_code + " | " + date + " | " + start + " - " + end)
                                     .setPositiveButton("Yes", (dialog, which) -> {
                                         datesRef.child(slotId).removeValue()
                                                 .addOnSuccessListener(aVoid -> {

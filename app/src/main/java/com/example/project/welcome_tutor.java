@@ -148,7 +148,7 @@ public class welcome_tutor extends AppCompatActivity {
                                 Toast.makeText(welcome_tutor.this, "The session must end after it starts", Toast.LENGTH_SHORT).show();
 
                             }
-                            else if (course_code.getTouchables().isEmpty()){
+                            else if (course_code.getText().toString().trim().isEmpty()){
                                 Toast.makeText(welcome_tutor.this, "Enter a Course Code", Toast.LENGTH_SHORT).show();
 
                             }
@@ -202,7 +202,7 @@ public class welcome_tutor extends AppCompatActivity {
                                                     dateMap.put("AutoAccept", autoAccept);
                                                     dateMap.put("Start", startTime);
                                                     dateMap.put("End", endTime);
-                                                    dateMap.put("Course Code", course_code);
+                                                    dateMap.put("Course Code", course_code.getText().toString().trim());
                                                     FirebaseDatabase.getInstance().getReference().child("Dates").child(userId + dateID + startTime).setValue(dateMap);
 
                                                 } else {

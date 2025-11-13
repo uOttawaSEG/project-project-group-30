@@ -34,6 +34,9 @@
             android:name=".login_admin"
             android:exported="false" />
         <activity
+            android:name=".book_session"
+            android:exported="false" />
+        <activity
             android:name=".reg"
             android:exported="false" />
         <activity
