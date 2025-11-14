@@ -151,7 +151,7 @@ public class book_session extends AppCompatActivity {
                                 if (last != null) tutorName += " " + last;
                                 if (tutorName.trim().isEmpty()) tutorName = tutorId; // fallback
 
-                                String slotInfo = tutorName + " — " + course + "\n" + date + " | " + start + " - " + end + " | " + rating;
+                                String slotInfo = tutorName + " — " + course + "\n" + date + " | " + start + " - " + end + " | " + rating+" star Rating";
 
                                 slotList.add(slotInfo);
                                 slotKeys.add(ds.getKey());
