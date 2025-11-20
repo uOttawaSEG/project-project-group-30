@@ -13,6 +13,7 @@ import android.app.AlertDialog;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.material.search.SearchBar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.*;
@@ -86,6 +87,7 @@ public class book_session extends AppCompatActivity {
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                searchBar.setText(" ");
             }
 
             @Override
@@ -104,13 +106,52 @@ public class book_session extends AppCompatActivity {
                     .setTitle("Request Session")
                     .setMessage("Do you want to request this session?\n\n" + selectedItem)
                     .setPositiveButton("Request", (dialog, which) -> {
-                        Map<String, Object> update = new HashMap<>();
-                        update.put("IsTaken", "pending");
-                        update.put("Student", userId);
-                        update.put("StudentName", First_name + " " + Last_name);
-                        datesRef.child(selectedKey).updateChildren(update);
-                        Toast.makeText(this, "Session requested!", Toast.LENGTH_SHORT).show();
-                    })
+                        String date = selectedItem.split("\n")[1].split(" \\| ")[0];
+                        String start = selectedItem.split("\\|")[1].trim().split(" - ")[0];
+                        String end = selectedItem.split("\\|")[1].trim().split(" - ")[1];
+
+                        int newStartMin = Integer.parseInt(start.substring(0,2)) * 60 + Integer.parseInt(start.substring(2,4));
+                        int newEndMin   = Integer.parseInt(end.substring(0,2)) * 60 + Integer.parseInt(end.substring(2,4));
+                        datesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot ds : snapshot.getChildren()) {
+
+                                    String studentId = ds.child("Student").getValue(String.class);
+                                    String status = ds.child("IsTaken").getValue(String.class);
+
+                                    if (studentId != null && studentId.equals(userId) && !"no".equals(status)) {
+
+                                        String existingDate = ds.child("Date").getValue(String.class);
+                                        if (!date.equals(existingDate)) continue;
+
+                                        String s = ds.child("Start").getValue(String.class);
+                                        String e = ds.child("End").getValue(String.class);
+
+                                        int existStartMin = Integer.parseInt(s.substring(0, 2)) * 60 + Integer.parseInt(s.substring(2, 4));
+                                        int existEndMin = Integer.parseInt(e.substring(0, 2)) * 60 + Integer.parseInt(e.substring(2, 4));
+
+                                        if (newStartMin < existEndMin && newEndMin > existStartMin) {
+                                            Toast.makeText(book_session.this, "You already have a session that overlaps with this time.", Toast.LENGTH_LONG).show();
+                                            return;
+                                        }
+                                    }
+                                }
+                                Map<String, Object> update = new HashMap<>();
+                                update.put("IsTaken", "pending");
+                                update.put("Student", userId);
+                                update.put("StudentName", First_name + " " + Last_name);
+                                datesRef.child(selectedKey).updateChildren(update);
+                                Toast.makeText(book_session.this, "Session requested", Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                            });
+
+                        })
                     .setNegativeButton("Cancel", null)
                     .show();
         });

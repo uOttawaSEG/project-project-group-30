@@ -34,6 +34,7 @@ public class see_sessions extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_sessions);
         btnBack = findViewById(R.id.btnBack);
+        sessions = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, sessions);
 
         studentsessions = FirebaseDatabase.getInstance().getReference("Dates");
@@ -54,8 +55,9 @@ public class see_sessions extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot ds : snapshot.getChildren()) {
-                        String isTaken = ds.child("IsTaken").getValue(String.class);
-                        if (!"no".equals(isTaken)) {
+                        String istaken = ds.child("IsTaken").getValue(String.class);
+                        String studentId = ds.child("Student").getValue(String.class);
+                        if (studentId.equals(userId)&& studentId!= null && !"no".equalsIgnoreCase(istaken)) {
                             String id = ds.child("Student").getValue(String.class);
                             if (userId.equals(id)) {
                                 String tutorId = ds.child("Tutor").getValue(String.class);
@@ -70,12 +72,14 @@ public class see_sessions extends AppCompatActivity {
                                         String first = tutorSnap.child("First").getValue(String.class);
                                         String last = tutorSnap.child("Last").getValue(String.class);
                                         Integer rating = tutorSnap.child("Rating").getValue(Integer.class);
+
+                                        if (rating == null) rating = 0;
                                         String tutorName = "";
                                         if (first != null) tutorName += first;
                                         if (last != null) tutorName += " " + last;
                                         if (tutorName.trim().isEmpty()) tutorName = tutorId; // fallback
 
-                                        String slotInfo = tutorName + " — " + course + "\n" + date + " | " + start + " - " + end + " | " + rating + " star Rating | " + status;
+                                        String slotInfo = tutorName + " — " + course + "\n" + date + " | " + start + " - " + end + " | " + rating + " star Rating | Status of Request: " + status;
 
                                         sessions.add(slotInfo);
                                         adapter.notifyDataSetChanged();
