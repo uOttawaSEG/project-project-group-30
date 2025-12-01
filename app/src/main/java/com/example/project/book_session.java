@@ -114,7 +114,7 @@
                                 String code = courseList.get(i);
                                 if (code!=null) {
                                     //removes spaces and uppercase
-                                    if(courseList.get(i).toLowerCase().replace(" ","").contains(s.toString().toLowerCase().replace(" ","")))
+                                    if(courseList.get(i).toLowerCase().replace(" ","").equals(s.toString().toLowerCase().replace(" ","")))
                                     adapter.add(slotList.get(i));
                                     displayedKeys.add(slotKeys.get(i));
                                 }
