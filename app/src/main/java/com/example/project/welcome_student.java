@@ -22,7 +22,7 @@ public class welcome_student extends AppCompatActivity {
         // Link the button variable to the actual button in the layout
         btnLogout = findViewById(R.id.btnLogout);
         btnbookSession = findViewById(R.id.btnbookSession);
-        btnseeSession= findViewById(R.id.btnbookSession);
+        btnseeSession= findViewById(R.id.btnseeSession);
 
         btnseeSession.setOnClickListener(v ->{
             Intent intent = new Intent(welcome_student.this,see_sessions.class);
