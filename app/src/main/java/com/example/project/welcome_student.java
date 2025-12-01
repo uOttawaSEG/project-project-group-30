@@ -25,7 +25,7 @@ public class welcome_student extends AppCompatActivity {
         btnseeSession= findViewById(R.id.btnseeSession);
 
         btnseeSession.setOnClickListener(v ->{
-            Intent intent = new Intent(welcome_student.this,Calendar_Lists.class);
+            Intent intent = new Intent(welcome_student.this,see_sessions.class);
             startActivity(intent);
         });
 

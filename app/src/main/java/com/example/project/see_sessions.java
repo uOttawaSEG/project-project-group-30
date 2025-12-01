@@ -20,96 +20,112 @@ import java.util.ArrayList;
 
 public class see_sessions extends AppCompatActivity {
     private Button btnBack;
-    EditText searchBar;
-    ArrayAdapter<String> adapter;
+    //EditText searchBar;
+    private ArrayAdapter<String> adapter;
 
-    ListView listView;
-    ArrayList<String> sessions;
-    DatabaseReference studentsessions,accountsTutorRef;
-    FirebaseAuth mAuth;
-    FirebaseUser user;
-    String userId;
+    private ListView listView;
+    private ArrayList<String> sessions;
+    private DatabaseReference datesRef,accountsRef;
+    private FirebaseAuth mAuth;
+    private FirebaseUser user;
+    private String userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_sessions);
+
         btnBack = findViewById(R.id.btnBack);
+        listView = findViewById(R.id.listSessions);
         sessions = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, sessions);
+        listView.setAdapter(adapter);
 
-        studentsessions = FirebaseDatabase.getInstance().getReference("Dates");
-        accountsTutorRef = FirebaseDatabase.getInstance().getReference("Accounts");
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         if (user == null) {
-            Toast.makeText(this, "User not logged in!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
         userId = user.getUid();
 
+        datesRef = FirebaseDatabase.getInstance().getReference("Dates");
+        accountsRef = FirebaseDatabase.getInstance().getReference("Accounts");
 
-        loadMySessions();
+
+
         btnBack.setOnClickListener(v -> {
             Intent intent = new Intent(see_sessions.this, welcome_student.class);
             startActivity(intent);
         });
-    }
-        private void loadMySessions() {
 
-            studentsessions.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-                        String istaken = ds.child("IsTaken").getValue(String.class);
-                        String studentId = ds.child("Student").getValue(String.class);
-                        if (studentId != null && studentId.equals(userId) && !"no".equalsIgnoreCase(istaken)) {
-                            String id = ds.child("Student").getValue(String.class);
-                            if (userId.equals(id)) {
-                                String tutorId = ds.child("Tutor").getValue(String.class);
-                                String date = ds.child("Date").getValue(String.class);
-                                String start = ds.child("Start").getValue(String.class);
-                                String end = ds.child("End").getValue(String.class);
-                                String course = ds.child("Course Code").getValue(String.class);
-                                String status = ds.child("IsTaken").getValue(String.class);
-                                accountsTutorRef.child(tutorId).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot tutorSnap) {
-                                        String first = tutorSnap.child("First").getValue(String.class);
-                                        String last = tutorSnap.child("Last").getValue(String.class);
-                                        Integer rating = tutorSnap.child("Rating").getValue(Integer.class);
+        datesRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                sessions.clear();
+                boolean hasSlots = false;
 
-                                        if (rating == null) rating = 0;
-                                        String tutorName = "";
-                                        if (first != null) tutorName += first;
-                                        if (last != null) tutorName += " " + last;
-                                        if (tutorName.trim().isEmpty()) tutorName = tutorId; // fallback
-
-                                        String slotInfo = tutorName + " — " + course + "\n" + date + " | " + start + " - " + end + " | " + rating + " star Rating | Status of Request: " + status;
-
-                                        sessions.add(slotInfo);
-                                        adapter.notifyDataSetChanged();
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                    }
-                                });
-                            }
-
-                        }
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    String taken = ds.child("IsTaken").getValue(String.class);
+                    String student = ds.child("Student").getValue(String.class);
+                    if(student == null || taken == null){
+                        continue;
                     }
-                    if (sessions.isEmpty()) {
-                        Toast.makeText(see_sessions.this, "No available sessions found.", Toast.LENGTH_SHORT).show();
+                    if(student.equals(userId) && !taken.equalsIgnoreCase("no")){
+                        hasSlots = true;
+
+                        String tutorId = ds.child("Tutor").getValue(String.class);
+                        String date = ds.child("Date").getValue(String.class);
+                        String start = ds.child("Start").getValue(String.class);
+                        String end = ds.child("End").getValue(String.class);
+                        String course = ds.child("Course Code").getValue(String.class);
+
+                        loadTutorName(tutorId, name ->{
+                            String info = name + " - " + course + "\n" + date + " | " + start + " - "+ end + " | Approval: " + taken;
+                            sessions.add(info);
+                            adapter.notifyDataSetChanged();
+                        });
                     }
                 }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(see_sessions.this, "Failed to load data.", Toast.LENGTH_SHORT).show();
-
+                if (!hasSlots) {
+                    Toast.makeText(see_sessions.this, "You have no booked essions", Toast.LENGTH_SHORT).show();
                 }
-            });
-        }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(see_sessions.this, "Failed to load data.", Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
+        private void loadTutorName(String tutorId, OnTutorLoaded listener) {
+            accountsRef.child(tutorId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snap) {
+                    String first = snap.child("First").getValue(String.class);
+                    String last = snap.child("Last").getValue(String.class);
+
+                    String name = (first != null ? first : "") + " " +
+                            (last != null ? last : "");
+
+                    if (name.trim().isEmpty())
+                        name = "Tutor " + tutorId;
+
+                    listener.onLoaded(name);
+                }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+
+    }
+    interface OnTutorLoaded {
+        void onLoaded(String tutorName);
+    }
+
+}
+
+
+
 

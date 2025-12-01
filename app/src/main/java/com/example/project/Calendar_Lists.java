@@ -37,8 +37,6 @@ public class Calendar_Lists extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //btnAddAvail = findViewById(R.id.btnAddAvail);
-        //ViewPaer
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser User = mAuth.getCurrentUser();
         String userId = User.getUid();
@@ -136,13 +134,13 @@ public class Calendar_Lists extends AppCompatActivity {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             if ("yes".equals(snapshot.child("IsTaken").getValue(String.class))) {
-                                                message=snapshot.child("StudentName").getValue(String.class) + "is currently registered for this settion";
+                                                message=snapshot.child("StudentName").getValue(String.class) + " is currently registered for this settion";
                                                 option=0;
                                             } else if ("no".equals(snapshot.child("IsTaken").getValue(String.class))) {
-                                                message="no one is currently registered for this settion";
+                                                message="no one is currently registered for this section";
                                                 option=1;
                                             } else if ("pending".equals(snapshot.child("IsTaken").getValue(String.class))) {
-                                                message=snapshot.child("StudentName").getValue(String.class) + "is currently requesting for this settion. Would you like to accept them?";
+                                                message=snapshot.child("StudentName").getValue(String.class) + " is currently requesting for this settion. Would you like to accept them?";
                                                 option=2;
                                             }
                                             AlertDialog.Builder statBuilder = new AlertDialog.Builder(Calendar_Lists.this);
