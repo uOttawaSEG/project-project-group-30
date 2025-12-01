@@ -51,4 +51,10 @@
         android:text="CONTINUE"
         android:backgroundTint="@android:color/black"/>
 
+    <Button
+        android:id="@+id/sbackbutton"
+        android:layout_width="202dp"
+        android:layout_height="wrap_content"
+        android:text="BACK" />
+
 </LinearLayout>

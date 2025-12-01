@@ -50,4 +50,10 @@
         android:layout_height="wrap_content"
         android:text="CONTINUE"
         android:backgroundTint="@android:color/black"/>
+
+    <Button
+        android:id="@+id/adbackbutton"
+        android:layout_width="199dp"
+        android:layout_height="wrap_content"
+        android:text="BACK" />
 </LinearLayout>

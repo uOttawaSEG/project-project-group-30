@@ -36,4 +36,11 @@
         android:textSize="24sp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@android:color/black" />
+
+    <Button
+        android:id="@+id/btnback"
+        android:layout_width="198dp"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:textSize="24sp" />
 </LinearLayout>

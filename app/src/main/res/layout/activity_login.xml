@@ -45,4 +45,11 @@
         android:textSize="24sp"
         android:backgroundTint="@android:color/black"/>
 
+    <Button
+        android:id="@+id/lbackbutton"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:textSize="24sp" />
+
 </LinearLayout>

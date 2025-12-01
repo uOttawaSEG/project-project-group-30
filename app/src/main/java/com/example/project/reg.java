@@ -10,6 +10,8 @@ public class reg extends AppCompatActivity {
     // buttons for choosing whether to register as a student or a tutor
     private Button btnStudent;
     private Button btnTutor;
+    private Button btnback;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +21,7 @@ public class reg extends AppCompatActivity {
         // connect the button variables to the actual buttons in the XML layout
         btnStudent = findViewById(R.id.btnStudentRegister);
         btnTutor = findViewById(R.id.btnTutorRegister);
+        btnback = findViewById(R.id.btnback);
         // when the student button is clicked, open the student registration screen
         btnStudent.setOnClickListener(v -> {
             Intent intent = new Intent(reg.this, reg_student.class);
@@ -29,7 +32,11 @@ public class reg extends AppCompatActivity {
             Intent intent = new Intent(reg.this, reg_tutor.class);
             startActivity(intent);
         });
+        btnback.setOnClickListener(v -> {
+            Intent intent = new Intent(reg.this, MainActivity.class);
+            startActivity(intent);
+        });
+    }
 
 
     }
-}

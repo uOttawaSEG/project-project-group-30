@@ -12,6 +12,8 @@ public class login_admin extends AppCompatActivity {
     private EditText txtUsername;
     private EditText txtPassword;
     private Button btnContinueAdmin;
+    private Button adbackbutton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,6 +21,7 @@ public class login_admin extends AppCompatActivity {
         setContentView(R.layout.activity_login_admin);
 // assign the characteristics of the actual button to the varible declared in this code, same as the username and password text fields
         btnContinueAdmin = findViewById(R.id.btnContinueAdmin);
+        adbackbutton = findViewById(R.id.adbackbutton);
         txtUsername =(EditText) findViewById(R.id.txtUserAdmin);
         txtPassword =(EditText) findViewById(R.id.txtPassAdmin);
 // when the button is clicked it makes sure that the text in the user is the same as the admin login and the [password is the same as the admin
@@ -34,6 +37,10 @@ public class login_admin extends AppCompatActivity {
            else{
                Toast.makeText(this, "Invalid email or password.", Toast.LENGTH_SHORT).show();
            }
+        });
+        adbackbutton.setOnClickListener(v -> {
+            Intent intent = new Intent(login_admin.this, login.class);
+            startActivity(intent);
         });
 
     }
