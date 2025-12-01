@@ -41,7 +41,13 @@ public class see_sessions extends AppCompatActivity {
         accountsTutorRef = FirebaseDatabase.getInstance().getReference("Accounts");
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "User not logged in!", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
         userId = user.getUid();
+
 
         loadMySessions();
         btnBack.setOnClickListener(v -> {
@@ -57,7 +63,7 @@ public class see_sessions extends AppCompatActivity {
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         String istaken = ds.child("IsTaken").getValue(String.class);
                         String studentId = ds.child("Student").getValue(String.class);
-                        if (studentId.equals(userId)&& studentId!= null && !"no".equalsIgnoreCase(istaken)) {
+                        if (studentId != null && studentId.equals(userId) && !"no".equalsIgnoreCase(istaken)) {
                             String id = ds.child("Student").getValue(String.class);
                             if (userId.equals(id)) {
                                 String tutorId = ds.child("Tutor").getValue(String.class);
