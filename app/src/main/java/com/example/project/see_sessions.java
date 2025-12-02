@@ -25,6 +25,7 @@ public class see_sessions extends AppCompatActivity {
 
     private ListView listView;
     private ArrayList<String> sessions;
+    private ArrayList<String>  sessionIds;
     private DatabaseReference datesRef,accountsRef;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
@@ -38,6 +39,7 @@ public class see_sessions extends AppCompatActivity {
         btnBack = findViewById(R.id.btnBack);
         listView = findViewById(R.id.listSessions);
         sessions = new ArrayList<>();
+        sessionIds = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, sessions);
         listView.setAdapter(adapter);
 
@@ -64,6 +66,7 @@ public class see_sessions extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 sessions.clear();
+                sessionIds.clear();
                 boolean hasSlots = false;
 
                 for (DataSnapshot ds : snapshot.getChildren()) {
@@ -74,7 +77,8 @@ public class see_sessions extends AppCompatActivity {
                     }
                     if(student.equals(userId) && !taken.equalsIgnoreCase("no")){
                         hasSlots = true;
-
+                        String slotId = ds.getKey();
+                        String raiting =ds.child("Raiting").getValue(String.class);
                         String tutorId = ds.child("Tutor").getValue(String.class);
                         String date = ds.child("Date").getValue(String.class);
                         String start = ds.child("Start").getValue(String.class);

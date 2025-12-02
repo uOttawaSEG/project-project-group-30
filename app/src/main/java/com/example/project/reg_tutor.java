@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -177,6 +178,7 @@ public class reg_tutor extends AppCompatActivity {
                                     map.put("Job", "Tutor");
                                     map.put("Status", 0);
                                     map.put("Rating",0);
+                                    map.put("NumberOfRaitings", new  ArrayList<Integer>());
 
 
 
