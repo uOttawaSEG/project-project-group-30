@@ -14,7 +14,6 @@ public class welcome_student extends AppCompatActivity {
     private Button btnbookSession;
     private Button btnseeSession;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
