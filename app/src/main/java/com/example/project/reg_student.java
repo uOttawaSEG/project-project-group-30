@@ -68,7 +68,11 @@ public class reg_student extends AppCompatActivity {
             EditText txtRegPassTutor = (EditText) findViewById(R.id.txtRegPassTutor);
             EditText txtPhoneTutor = (EditText) findViewById(R.id.txtPhoneTutor);
             EditText txtProg = (EditText) findViewById(R.id.txtProg);
-            PhoneNumberVerify verify = new PhoneNumberVerify();
+            PhoneNumberVerify verify3 = new PhoneNumberVerify();
+            if (!verify3.isValidPhoneNumber(txtPhoneTutor.getText().toString().trim())) {
+                Toast.makeText(reg_student.this, "Please enter a valid phone number.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             // check first name is not empty
             if(txtFirstTutor.getText().toString().trim().length()==0){
                 Toast.makeText(this, "Invalid first name", Toast.LENGTH_SHORT).show();
