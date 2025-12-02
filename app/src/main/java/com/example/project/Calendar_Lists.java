@@ -25,7 +25,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Calendar_Lists extends AppCompatActivity {
     private Button btnAddAvail;
@@ -44,7 +47,7 @@ public class Calendar_Lists extends AppCompatActivity {
         String userId = User.getUid();
 
 
-            EdgeToEdge.enable(this);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_calendar_lists);
         LinearLayout layout = findViewById(R.id.main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -89,108 +92,142 @@ public class Calendar_Lists extends AppCompatActivity {
 
                         // On click → ask to delete
                         btn.setOnClickListener(v -> {
-                            AlertDialog.Builder mainBuilder = new AlertDialog.Builder(Calendar_Lists.this);
-                            mainBuilder.setTitle("Modify session");
-                            mainBuilder.setMessage("Would you like to Delete the time slot or check approval status");
-                            mainBuilder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                            //check if the date has already happened
+                            Date curdate = new Date();
+                            int curHour = curdate.getHours();
+                            int curMin = curdate.getMinutes();
+                            datesRef.child(slotId).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    new AlertDialog.Builder(Calendar_Lists.this)
-                                            .setTitle("Delete Time Slot")
-                                            .setMessage("Do you want to delete this time slot?\n" + Course_code + " | " + date + " | " + start + " - " + end)
-                                            .setPositiveButton("Yes", (inDialog, inWhich) -> {
-                                                datesRef.child(slotId).addListenerForSingleValueEvent(new ValueEventListener() {
-                                                    @Override
-                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                        if ("yes".equals(snapshot.child("IsTaken").getValue(String.class))) {
-                                                            Toast.makeText(Calendar_Lists.this, "A student is already signed up for this time slot. If you wish to delete it you must reject them first.", Toast.LENGTH_SHORT).show();
-                                                            return;
-                                                        }
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    String startTime=snapshot.child("Start").getValue(String.class);
+                                    //the current date
+                                    SimpleDateFormat dateFormatyd = new SimpleDateFormat("yyyy/MM/dd");
+                                    //date of the session
+                                    String slectedDate = snapshot.child("Date").getValue(String.class);
 
-                                                        datesRef.child(slotId).removeValue()
-                                                                .addOnSuccessListener(aVoid -> {
-                                                                    Toast.makeText(Calendar_Lists.this, "Time slot deleted.", Toast.LENGTH_SHORT).show();
-                                                                })
-                                                                .addOnFailureListener(e -> {
-                                                                    Toast.makeText(Calendar_Lists.this, "Failed to delete slot.", Toast.LENGTH_SHORT).show();
+                                    try {
+                                        //checks if the date is in the past or if on the current day the time has already happened
+                                        if(dateFormatyd.parse(dateFormatyd.format(curdate)).after(dateFormatyd.parse(slectedDate)) || curHour*60+curMin > Integer.valueOf(startTime.substring(0,2))*60+Integer.valueOf(startTime.substring(2,4))&&dateFormatyd.parse(dateFormatyd.format(curdate)).equals(dateFormatyd.parse(slectedDate))){
+                                            Toast.makeText(Calendar_Lists.this, "This time has already happened", Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
+                                        else {
+                                            AlertDialog.Builder mainBuilder = new AlertDialog.Builder(Calendar_Lists.this);
+                                            mainBuilder.setTitle("Modify session");
+                                            mainBuilder.setMessage("Would you like to Delete the time slot or check approval status");
+                                            mainBuilder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    new AlertDialog.Builder(Calendar_Lists.this)
+                                                            .setTitle("Delete Time Slot")
+                                                            .setMessage("Do you want to delete this time slot?\n" + Course_code + " | " + date + " | " + start + " - " + end)
+                                                            .setPositiveButton("Yes", (inDialog, inWhich) -> {
+                                                                datesRef.child(slotId).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                    @Override
+                                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                                        if ("yes".equals(snapshot.child("IsTaken").getValue(String.class))) {
+                                                                            Toast.makeText(Calendar_Lists.this, "A student is already signed up for this time slot. If you wish to delete it you must reject them first.", Toast.LENGTH_SHORT).show();
+                                                                            return;
+                                                                        }
+
+                                                                        datesRef.child(slotId).removeValue()
+                                                                                .addOnSuccessListener(aVoid -> {
+                                                                                    Toast.makeText(Calendar_Lists.this, "Time slot deleted.", Toast.LENGTH_SHORT).show();
+                                                                                })
+                                                                                .addOnFailureListener(e -> {
+                                                                                    Toast.makeText(Calendar_Lists.this, "Failed to delete slot.", Toast.LENGTH_SHORT).show();
+                                                                                });
+                                                                    }
+                                                                    @Override
+                                                                    public void onCancelled(@NonNull DatabaseError error) {
+                                                                        Toast.makeText(Calendar_Lists.this, "Database read failed.", Toast.LENGTH_SHORT).show();
+                                                                    }
                                                                 });
-                                                    }
+                                                            })
+                                                            .setNegativeButton("No", null)
+                                                            .show();
+                                                }
+                                            });
+                                            mainBuilder.setPositiveButton("Check Status", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    datesRef.child(slotId).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        //check if someone is already signed up
+                                                        //keeps track if someone is already registered,if no one is registred or if its pending with someone
+                                                        int option=-1;
+                                                        String message="";
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                            if ("yes".equals(snapshot.child("IsTaken").getValue(String.class))) {
+                                                                message=snapshot.child("StudentName").getValue(String.class) + "is currently registered for this settion";
+                                                                option=0;
+                                                            } else if ("no".equals(snapshot.child("IsTaken").getValue(String.class))) {
+                                                                message="no one is currently registered for this settion";
+                                                                option=1;
+                                                            } else if ("pending".equals(snapshot.child("IsTaken").getValue(String.class))) {
+                                                                message=snapshot.child("StudentName").getValue(String.class) + "is currently requesting for this settion. Would you like to accept them?";
+                                                                option=2;
+                                                            }
+                                                            AlertDialog.Builder statBuilder = new AlertDialog.Builder(Calendar_Lists.this);
+                                                            statBuilder.setTitle("Current status");
+                                                            statBuilder.setMessage(message);
+
+                                                            if(option==1){
+                                                                statBuilder.setPositiveButton("Ok", null);
+                                                            } else if (option==0) {
+                                                                statBuilder.setPositiveButton("Reject them", new DialogInterface.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(DialogInterface dialog, int which) {
+                                                                        datesRef.child(slotId).child("IsTaken").setValue("no");
+                                                                        datesRef.child(slotId).child("StudentName").setValue("Empty");
+                                                                        datesRef.child(slotId).child("Student").setValue("Empty");
+                                                                    }
+                                                                });
+                                                                statBuilder.setNegativeButton("Ok", null);
+                                                            } else if (option==2) {
+                                                                statBuilder.setPositiveButton("Reject them", new DialogInterface.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(DialogInterface dialog, int which) {
+                                                                        datesRef.child(slotId).child("IsTaken").setValue("no");
+                                                                        datesRef.child(slotId).child("StudentName").setValue("Empty");
+                                                                        datesRef.child(slotId).child("Student").setValue("Empty");
+                                                                    }
+                                                                });
+                                                                statBuilder.setNegativeButton("Accept them", new DialogInterface.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(DialogInterface dialog, int which) {
+                                                                        datesRef.child(slotId).child("IsTaken").setValue("yes");
+                                                                    }
+                                                                });
+
+
+                                                            }
+
+                                                            statBuilder.show();
+
+                                                        }
                                                         @Override
                                                         public void onCancelled(@NonNull DatabaseError error) {
-                                                            Toast.makeText(Calendar_Lists.this, "Database read failed.", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(Calendar_Lists.this, "Failed to read status: " + error.getMessage(), Toast.LENGTH_LONG).show();
                                                         }
                                                     });
-                                                })
-                                            .setNegativeButton("No", null)
-                                            .show();
+                                                }
+                                            });
+                                            mainBuilder.show();
+                                        }
+                                    } catch (ParseException e) {
+                                        return;
+
+                                    }
                                 }
-                        });
-                            mainBuilder.setPositiveButton("Check Status", new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    datesRef.child(slotId).addListenerForSingleValueEvent(new ValueEventListener() {
-                                        //check if someone is already signed up
-                                        //keeps track if someone is already registered,if no one is registred or if its pending with someone
-                                        int option=-1;
-                                        String message="";
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            if ("yes".equals(snapshot.child("IsTaken").getValue(String.class))) {
-                                                message=snapshot.child("StudentName").getValue(String.class) + "is currently registered for this settion";
-                                                option=0;
-                                            } else if ("no".equals(snapshot.child("IsTaken").getValue(String.class))) {
-                                                message="no one is currently registered for this settion";
-                                                option=1;
-                                            } else if ("pending".equals(snapshot.child("IsTaken").getValue(String.class))) {
-                                                message=snapshot.child("StudentName").getValue(String.class) + "is currently requesting for this settion. Would you like to accept them?";
-                                                option=2;
-                                            }
-                                            AlertDialog.Builder statBuilder = new AlertDialog.Builder(Calendar_Lists.this);
-                                            statBuilder.setTitle("Current status");
-                                            statBuilder.setMessage(message);
-
-                                            if(option==1){
-                                                statBuilder.setPositiveButton("Ok", null);
-                                            } else if (option==0) {
-                                                statBuilder.setPositiveButton("Reject them", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        datesRef.child(slotId).child("IsTaken").setValue("no");
-                                                        datesRef.child(slotId).child("StudentName").setValue("Empty");
-                                                        datesRef.child(slotId).child("Student").setValue("Empty");
-                                                    }
-                                                });
-                                                statBuilder.setNegativeButton("Ok", null);
-                                            } else if (option==2) {
-                                                statBuilder.setPositiveButton("Reject them", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        datesRef.child(slotId).child("IsTaken").setValue("no");
-                                                        datesRef.child(slotId).child("StudentName").setValue("Empty");
-                                                        datesRef.child(slotId).child("Student").setValue("Empty");
-                                                    }
-                                                });
-                                                statBuilder.setNegativeButton("Accept them", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        datesRef.child(slotId).child("IsTaken").setValue("yes");
-                                                    }
-                                                });
-
-
-                                            }
-
-                                            statBuilder.show();
-
-                                        }
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-                                            Toast.makeText(Calendar_Lists.this, "Failed to read status: " + error.getMessage(), Toast.LENGTH_LONG).show();
-                                        }
-                                    });
+                                public void onCancelled(@NonNull DatabaseError error) {
                                 }
+
                             });
-                            mainBuilder.show();
+
+
+
                         });
 
                         layout.addView(btn);
@@ -212,4 +249,3 @@ public class Calendar_Lists extends AppCompatActivity {
         });
     }
 }
-

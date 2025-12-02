@@ -1,6 +1,8 @@
 package com.example.project;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -17,6 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class see_sessions extends AppCompatActivity {
     private Button btnBack;
@@ -42,6 +45,16 @@ public class see_sessions extends AppCompatActivity {
         sessionIds = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, sessions);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+                    String selectedSlotId = sessionIds.get(position);
+                    String selectedSessionInfo = sessions.get(position);
+
+                    AlertDialog.Builder futureBuilder = new AlertDialog.Builder(see_sessions.this);
+            futureBuilder.setTitle("Modify session");
+            futureBuilder.setMessage("Would you like to Delete the time slot or check approval status");
+            futureBuilder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+
+                });
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
@@ -78,7 +91,14 @@ public class see_sessions extends AppCompatActivity {
                     if(student.equals(userId) && !taken.equalsIgnoreCase("no")){
                         hasSlots = true;
                         String slotId = ds.getKey();
-                        String raiting =ds.child("Raiting").getValue(String.class);
+                       //gets the current raiting
+                        GenericTypeIndicator<List<Integer>> t = new GenericTypeIndicator<List<Integer>>() {};
+                        List<Integer> raitings = ds.child("NumberOfRaitings").getValue(t);
+                        int total=0;
+                        for(int rate : raitings){
+                            total+=rate;
+                        }
+                        String raiting =ds.child("Rating").getValue(String.class);
                         String tutorId = ds.child("Tutor").getValue(String.class);
                         String date = ds.child("Date").getValue(String.class);
                         String start = ds.child("Start").getValue(String.class);
@@ -88,6 +108,7 @@ public class see_sessions extends AppCompatActivity {
                         loadTutorName(tutorId, name ->{
                             String info = name + " - " + course + "\n" + date + " | " + start + " - "+ end + " | Approval: " + taken;
                             sessions.add(info);
+                            sessionIds.add(slotId);
                             adapter.notifyDataSetChanged();
                         });
                     }
