@@ -52,6 +52,17 @@ public class login_student extends AppCompatActivity {
                 Toast.makeText(login_student.this, "Please enter a valid email address.", Toast.LENGTH_SHORT).show();
                 return;
             }
+            PasswordVerify verify2 = new PasswordVerify();
+            if (!verify2.isValidPassword(password)) {
+                Toast.makeText(login_student.this, "Please enter a valid password.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            PhoneNumberVerify verify3 = new PhoneNumberVerify();
+            if (!verify3.isValidPhoneNumber(password)) {
+                Toast.makeText(login_student.this, "Please enter a valid phone number.", Toast.LENGTH_SHORT).show();
+            return;
+            }
+
             // This connects the app to Firebase’s Authentication service
             mAuth = FirebaseAuth.getInstance();
             // attempts to sign in, so it checks these credentials against the Authentication data stored in the database, and runs a listener when its done

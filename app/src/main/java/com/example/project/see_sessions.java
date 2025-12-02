@@ -89,7 +89,7 @@ public class see_sessions extends AppCompatActivity {
                     }
                 }
                 if (!hasSlots) {
-                    Toast.makeText(see_sessions.this, "You have no booked essions", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(see_sessions.this, "You have no booked sessions", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override

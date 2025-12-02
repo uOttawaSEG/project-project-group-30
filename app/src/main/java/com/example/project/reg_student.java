@@ -35,6 +35,9 @@ public class reg_student extends AppCompatActivity {
     boolean gfirst = false;// first name validation flag
     boolean glast = false;// last name validation flag
 
+    private PhoneNumberVerify phonenumberverify = new PhoneNumberVerify();
+
+
 
 
 
@@ -65,6 +68,7 @@ public class reg_student extends AppCompatActivity {
             EditText txtRegPassTutor = (EditText) findViewById(R.id.txtRegPassTutor);
             EditText txtPhoneTutor = (EditText) findViewById(R.id.txtPhoneTutor);
             EditText txtProg = (EditText) findViewById(R.id.txtProg);
+            PhoneNumberVerify verify = new PhoneNumberVerify();
             // check first name is not empty
             if(txtFirstTutor.getText().toString().trim().length()==0){
                 Toast.makeText(this, "Invalid first name", Toast.LENGTH_SHORT).show();

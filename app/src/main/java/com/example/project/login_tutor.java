@@ -39,6 +39,22 @@ public class login_tutor extends AppCompatActivity {
         btnContinueTutor.setOnClickListener(v -> {
             String email = txtUsername.getText().toString().trim();
             String password = txtPassword.getText().toString().trim();
+            //verifies email with the verify email class
+            EmaiVerify verify= new EmaiVerify();
+            if (!verify.isValidEmail(email)) {
+                Toast.makeText(login_tutor.this, "Please enter a valid email address.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            PasswordVerify verify2 = new PasswordVerify();
+            if (!verify2.isValidPassword(password)) {
+                Toast.makeText(login_tutor.this, "Please enter a valid password.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            PhoneNumberVerify verify3 = new PhoneNumberVerify();
+            if (!verify3.isValidPhoneNumber(password)) {
+                Toast.makeText(login_tutor.this, "Please enter a valid phone number.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             /* for(MainActivity.tutor t :MainActivity.tutors){
 //if both the user and password are correct it takes us to the the tutor login page
                 if(email.equals(t.getEmail()) && password.equals(t.getPassword())) {
