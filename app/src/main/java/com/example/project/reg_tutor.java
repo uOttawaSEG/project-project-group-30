@@ -61,6 +61,7 @@ public class reg_tutor extends AppCompatActivity {
         });
         // connect the register button from XML to code
         Button btnRegTutor = findViewById(R.id.btnRegTutor);
+        Button rtback = findViewById(R.id.rtback);
         // when the register button is clicked, validate input and create a new tutor
         btnRegTutor.setOnClickListener(v -> {
             // get text input fields from the layout
@@ -199,6 +200,10 @@ public class reg_tutor extends AppCompatActivity {
                         });
 
             }
+        });
+        rtback.setOnClickListener(v -> {
+            Intent intent = new Intent(reg_tutor.this, reg.class);
+            startActivity(intent);
         });
         }
     }

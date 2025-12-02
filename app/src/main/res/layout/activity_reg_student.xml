@@ -101,4 +101,10 @@
         android:text="Register"
         android:backgroundTint="@android:color/black"/>
 
+    <Button
+        android:id="@+id/rsback"
+        android:layout_width="201dp"
+        android:layout_height="wrap_content"
+        android:text="Button" />
+
 </LinearLayout>

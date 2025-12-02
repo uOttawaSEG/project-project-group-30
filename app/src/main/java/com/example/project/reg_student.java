@@ -55,6 +55,8 @@ public class reg_student extends AppCompatActivity {
         });
         // connect the register button from XML to the variable
         Button btnRegStudent = findViewById(R.id.btnRegStudent);
+        // connect the back button from XML to the variable
+        Button rsback = findViewById(R.id.rsback);
         // when the register button is clicked, validate inputs and create a new student account
         btnRegStudent.setOnClickListener(v -> {
             EditText txtFirstTutor = (EditText) findViewById(R.id.txtFirstTutor);
@@ -175,10 +177,15 @@ public class reg_student extends AppCompatActivity {
 
             }
         });
+        rsback.setOnClickListener(v -> {
+            Intent intent = new Intent(reg_student.this, reg.class);
+            startActivity(intent);
+        });
+
+        }
 
     }
 
-}
 
 
 

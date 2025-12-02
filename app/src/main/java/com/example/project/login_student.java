@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class login_student extends AppCompatActivity {
 
     private Button btnContinueStudent;
+    private Button sbackbutton;
     FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,7 @@ public class login_student extends AppCompatActivity {
         });
         // assign the characteristics of the actual button to the varible declared in this code, same as the username and password text fields
         btnContinueStudent = findViewById(R.id.btnContinueStudent);
+        sbackbutton = findViewById(R.id.sbackbutton);
         EditText txtUsername = (EditText) findViewById(R.id.txtUserStudent);
         EditText txtPassword =(EditText) findViewById(R.id.txtPassStudent);
         // when the button is clicked it makes sure that the text in the user is the same as the student login and the password, it calles a function to get the student password and student user and then verifies
@@ -107,6 +109,11 @@ public class login_student extends AppCompatActivity {
 
                     });
         });
+        sbackbutton.setOnClickListener(v -> {
+            Intent intent = new Intent(login_student.this, login.class);
+            startActivity(intent);
+        });
+
 
     }
 

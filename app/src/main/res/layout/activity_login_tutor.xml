@@ -50,4 +50,11 @@
         android:layout_height="wrap_content"
         android:text="CONTINUE"
         android:backgroundTint="@android:color/black"/>
+
+    <Button
+        android:id="@+id/backbutton"
+        android:layout_width="198dp"
+        android:layout_height="wrap_content"
+        android:text="BACK"
+        android:textColorLink="#000000" />
 </LinearLayout>

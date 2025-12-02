@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class login_tutor extends AppCompatActivity {
 
     private Button btnContinueTutor;
+    private Button backbutton;
     FirebaseAuth mAuth;
 
     @Override
@@ -31,6 +32,7 @@ public class login_tutor extends AppCompatActivity {
         setContentView(R.layout.activity_login_tutor);
         // assign the characteristics of the actual button to the varible declared in this code, same as the username and password text fields
         btnContinueTutor = findViewById(R.id.btnContinueTutor);
+        backbutton = findViewById(R.id.backbutton);
         EditText txtUsername = (EditText) findViewById(R.id.txtUserTutor);
         EditText txtPassword =(EditText) findViewById(R.id.txtPassTutor);
         // when the button is clicked it makes sure that the text in the user is the same as the tutor login and the password, first it goes through all the tutors in the tutor list and it calls a function to get the tutor password and tutor user and then verifies, if both of them dont match it goes onto the next in the list
@@ -100,7 +102,11 @@ public class login_tutor extends AppCompatActivity {
 
                     });
         });
+        backbutton.setOnClickListener(v -> {
+            Intent intent = new Intent(login_tutor.this, login.class);
+            startActivity(intent);
+        });
+        }
 
     }
 
-    }
