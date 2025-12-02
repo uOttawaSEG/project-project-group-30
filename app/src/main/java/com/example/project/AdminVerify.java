@@ -8,4 +8,3 @@ public class AdminVerify {
          return adminEmail.equals(email)&&adminPassword.equals(password);
      }
 }
-a
