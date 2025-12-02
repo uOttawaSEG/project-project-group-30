@@ -50,11 +50,7 @@ public class login_tutor extends AppCompatActivity {
                 Toast.makeText(login_tutor.this, "Please enter a valid password.", Toast.LENGTH_SHORT).show();
                 return;
             }
-            PhoneNumberVerify verify3 = new PhoneNumberVerify();
-            if (!verify3.isValidPhoneNumber(password)) {
-                Toast.makeText(login_tutor.this, "Please enter a valid phone number.", Toast.LENGTH_SHORT).show();
-                return;
-            }
+
             /* for(MainActivity.tutor t :MainActivity.tutors){
 //if both the user and password are correct it takes us to the the tutor login page
                 if(email.equals(t.getEmail()) && password.equals(t.getPassword())) {

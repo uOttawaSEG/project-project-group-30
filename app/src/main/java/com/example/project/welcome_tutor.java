@@ -203,6 +203,7 @@ public class welcome_tutor extends AppCompatActivity {
                                                     dateMap.put("Start", startTime);
                                                     dateMap.put("End", endTime);
                                                     dateMap.put("Course Code", course_code.getText().toString().trim());
+                                                    dateMap.put("isRated", "no");
                                                     FirebaseDatabase.getInstance().getReference().child("Dates").child(userId + dateID + startTime).setValue(dateMap);
 
                                                 } else {
