@@ -98,7 +98,6 @@ public class login_student extends AppCompatActivity {
                             }
 
                         }
-
                     });
         });
         sbackbutton.setOnClickListener(v -> {

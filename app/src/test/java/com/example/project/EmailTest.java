@@ -20,4 +20,5 @@ public class EmailTest {
         assertFalse("should be false since the email has no @", result);
     }
 
+
 }
