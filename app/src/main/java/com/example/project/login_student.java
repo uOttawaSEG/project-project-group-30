@@ -46,20 +46,12 @@ public class login_student extends AppCompatActivity {
         btnContinueStudent.setOnClickListener(v -> {
             String email = txtUsername.getText().toString().trim();
             String password = txtPassword.getText().toString().trim();
-            /*for(MainActivity.student s :MainActivity.students){
-                // if it matches up then it proceeds to student welcome page
-                if(email.equals(s.getEmail()) && password.equals(s.getPassword())) {
-                    Intent intent = new Intent(login_student.this, welcome_student.class);
-                    startActivity(intent);
-                    return;
-                    //
-                }
-                // if its different then it sends a message that its either the wrong email or password
-                else{
-                    Toast.makeText(this, "Invalid email or password.", Toast.LENGTH_SHORT).show();
-
-                }
-            }*/
+            //verifies email with the verify email class
+            EmaiVerify verify= new EmaiVerify();
+            if (!verify.isValidEmail(email)) {
+                Toast.makeText(login_student.this, "Please enter a valid email address.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             // This connects the app to Firebase’s Authentication service
             mAuth = FirebaseAuth.getInstance();
             // attempts to sign in, so it checks these credentials against the Authentication data stored in the database, and runs a listener when its done
