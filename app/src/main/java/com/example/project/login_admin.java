@@ -13,6 +13,7 @@ public class login_admin extends AppCompatActivity {
     private EditText txtPassword;
     private Button btnContinueAdmin;
     private Button adbackbutton;
+    private AdminVerify adminVerify = new AdminVerify();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,8 @@ public class login_admin extends AppCompatActivity {
             String email = txtUsername.getText().toString().trim();
             String password = txtPassword.getText().toString().trim();
             // if its the same it takes them to the admin welcome page
-           if(email.equals("admin@uottawa.ca") && password.equals("Admin101")){
+            AdminVerify verify = new AdminVerify();
+           if(verify.loginCheck(email,password)){
                Intent intent = new Intent(login_admin.this, welcome_admin.class);
                startActivity(intent);
             }
